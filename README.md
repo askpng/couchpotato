@@ -1,38 +1,32 @@
-# askpng Image Repo
+# couchpotato 🥔
 
-See the [BlueBuild docs](https://blue-build.org/how-to/setup/) for quick setup instructions for setting up your own repository based on this template.
+`fedora-bootc` based image for home entertainment use, powered by [blue-build](https://github.com/blue-build/template). Operable with gamepads!
 
-After setup, it is recommended you update this README to describe your custom image.
+![fried-couchpotato](files/repo/fried-couchpotato.png)
+
+This is a work in progress. README is TBA.
 
 ## Installation
 
-> **Warning**
-> [This is an experimental feature](https://www.fedoraproject.org/wiki/Changes/OstreeNativeContainerStable), try at your own discretion.
-
 To rebase an existing atomic Fedora installation to the latest build:
 
-- First rebase to the unsigned image, to get the proper signing keys and policies installed:
-  ```
-  rpm-ostree rebase ostree-unverified-registry:ghcr.io/askpng/couchpotato:latest
-  ```
-- Reboot to complete the rebase:
-  ```
-  systemctl reboot
-  ```
-- Then rebase to the signed image, like so:
-  ```
-  rpm-ostree rebase ostree-image-signed:docker://ghcr.io/askpng/couchpotato:latest
-  ```
-- Reboot again to complete the installation
-  ```
-  systemctl reboot
-  ```
 
-The `latest` tag will automatically point to the latest build. That build will still always use the Fedora version specified in `recipe.yml`, so you won't get accidentally updated to the next major version.
+```
+# Deploy image and reboot
+sudo bootc switch ghcr.io/askpng/fried-couchpotato:latest --apply 
+
+# Deploy signed image and reboot
+sudo bootc switch --enforce-container-sigpolicy ghcr.io/askpng/fried-couchpotato:latest --apply
+
+# Update and reboot
+sudo bootc upgrade --apply
+```
+
+The `latest` tag will automatically point to the latest build.
 
 ## ISO
 
-If build on Fedora Atomic, you can generate an offline ISO with the instructions available [here](https://blue-build.org/learn/universal-blue/#fresh-install-from-an-iso). These ISOs cannot unfortunately be distributed on GitHub for free due to large sizes, so for public projects something else has to be used for hosting.
+TBA
 
 ## Verification
 
@@ -41,5 +35,3 @@ These images are signed with [Sigstore](https://www.sigstore.dev/)'s [cosign](ht
 ```bash
 cosign verify --key cosign.pub ghcr.io/askpng/couchpotato
 ```
-
-Cloned from https://github.com/blue-build/template
