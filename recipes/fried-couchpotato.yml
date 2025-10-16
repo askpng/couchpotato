@@ -12,7 +12,6 @@ modules:
     repos:
       cleanup: true
       copr:
-        - abn/throttled
         - ferdiu/moonlight    
       nonfree: rpmfusion # for libva-intel-driver as fedora-multimedia doesn't seem to ship older intel drivers
     install:
@@ -30,7 +29,6 @@ modules:
         - gstreamer1-vaapi
         - libavcodec-freeworld
         - libva
-        - libva-intel-driver
         - mesa-va-drivers-freeworld
         - mesa-vulkan-drivers
         - pipewire-plugin-vulkan
@@ -62,6 +60,9 @@ modules:
         - google-noto-serif-cjk-vf-fonts
         - google-noto-sans-mono-cjk-vf-fonts        
         # Gamescope
+        - gamescope
+        - steam
+        - sddm
         ## Internet & Management
         - chromium
         - cockpit
@@ -95,6 +96,17 @@ modules:
 
   - type: script
     snippets:
+      # gamescope-session files
+      - git clone https://github.com/ChimeraOS/gamescope-session.git /tmp/gamescope-session
+      - cp -r /tmp/gamescope-session/usr/bin /usr
+      - cp -r /tmp/gamescope-session/usr/lib /usr
+      - cp -r /tmp/gamescope-session/usr/share /usr
+      - rm -r /tmp/gamescope-session
+      # opengamepadui files
+      - git clone https://github.com/ShadowBlip/gamescope-session-opengamepadui.git /tmp/opengamepadui
+      - cp -r /tmp/opengamepadui/usr/bin /usr
+      - cp -r /tmp/opengamepadui/usr/lib /usr
+      - rm -r /tmp/opengamepadui
       # flex-launcher - clone & build
       # TODO - need to find a better way to build this
       - git clone https://github.com/complexlogic/flex-launcher.git /tmp/flex-launcher && mkdir -p /tmp/flex-launcher/build
