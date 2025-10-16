@@ -1,0 +1,178 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
+
+name: fried-couchpotato
+description: Light image with entertainment and game streaming capabilities.
+
+base-image: quay.io/fedora/fedora-bootc
+image-version: 42
+
+modules:
+  - type: dnf
+    repos:
+      cleanup: true
+      copr:
+        - abn/throttled
+        - ferdiu/moonlight    
+      nonfree: rpmfusion # for libva-intel-driver as fedora-multimedia doesn't seem to ship older intel drivers
+    install:
+      install-weak-deps: false
+      packages:
+        # Graphics
+        - ffmpeg
+        - gstreamer1-plugin-dav1d
+        - gstreamer1-plugin-libav
+        - gstreamer1-plugins-base
+        - gstreamer1-plugins-good
+        - gstreamer1-plugins-good-qt
+        - gstreamer1-plugins-bad-freeworld
+        - gstreamer1-plugins-ugly
+        - gstreamer1-vaapi
+        - libavcodec-freeworld
+        - libva
+        - libva-intel-driver
+        - mesa-va-drivers-freeworld
+        - mesa-vulkan-drivers
+        - pipewire-plugin-vulkan
+        - vulkan-loader
+        - vulkan-headers
+        - vulkan-tools        
+        # HTPC Packages
+        ## Essentials
+        - cage
+        - fish
+        - grim
+        - lm_sensors
+        - moonlight-qt
+        - seatd
+        ## Audio & Video
+        - pipewire
+        - pipewire-utils
+        - pipewire-pulseaudio
+        - pipewire-alsa
+        - pulseaudio-utils
+        - libva-utils
+        - wireplumber
+        ## Bluetooth & Controllers
+        - bluez
+        - evtest
+        - python3-evdev        
+        - steam-devices
+        ## CJK fonts
+        - google-noto-serif-cjk-vf-fonts
+        - google-noto-sans-mono-cjk-vf-fonts        
+        # Gamescope
+        ## Internet & Management
+        - chromium
+        - cockpit
+        - firewall-config
+        - syncthing
+        ## Undervolting & TDP limit for older Intel CPUs
+        - throttled
+        # Dependencies
+        ## AppImage
+        - fuse
+        - ifuse
+        ## Cage & Moonlight
+        - libxcb
+        - qt6-qtwayland
+        - xdg-user-dirs
+        - xwayland-run
+        ## flex-launcher
+        - SDL2
+        - SDL2_image
+        - SDL2_ttf
+        ## Build flex-launcher
+        - SDL2-devel
+        - SDL2_image-devel
+        - SDL2_ttf-devel
+        - inih-devel
+        - automake
+        - make
+        - cmake
+        - gcc-c++
+        - git    
+
+  - type: script
+    snippets:
+      # flex-launcher - clone & build
+      # TODO - need to find a better way to build this
+      - git clone https://github.com/complexlogic/flex-launcher.git /tmp/flex-launcher && mkdir -p /tmp/flex-launcher/build
+      - cd /tmp/flex-launcher/build
+      - cmake /tmp/flex-launcher -DCMAKE_BUILD_TYPE=Release && make install
+      - rm -r /tmp/flex-launcher 
+      - mv /usr/local/share/flex-launcher/config.ini /usr/local/share/flex-launcher/config_default.ini
+      # AppImages
+      ## VacuumTube
+      - curl -fLs https://github.com/shy1132/VacuumTube/releases/latest/download/VacuumTube-x86_64.AppImage -o /tmp/vacuumtube.AppImage
+      - cp /tmp/vacuumtube.AppImage /usr/bin/vacuumtube.AppImage && chmod 0755 /usr/bin/vacuumtube.AppImage
+      - ln -s /usr/bin/vacuumtube.AppImage /usr/bin/vacuumtube
+      - rm /tmp/vacuumtube.AppImage   
+      # Binaries
+      ## bluetui
+      - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/pythops/bluetui/releases/latest)) && curl -fLs https://github.com/pythops/bluetui/releases/download/${VER}/bluetui-x86_64-linux-gnu  -o /tmp/bluetui"
+      - cp /tmp/bluetui /usr/bin/bluetui && chmod 0755 /usr/bin/bluetui
+      - rm /tmp/bluetui
+      ## just
+      - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/casey/just/releases/latest)) && curl -fLs --create-dirs https://github.com/casey/just/releases/download/${VER}/just-${VER}-x86_64-unknown-linux-musl.tar.gz -o /tmp/just-x86_64-unknown-linux-musl.tar.gz"
+      - "mkdir -p /tmp/just && tar -xzf /tmp/just-x86_64-unknown-linux-musl.tar.gz -C /tmp/just/"
+      - cp /tmp/just/just /usr/bin/just && chmod 0755 /usr/bin/just
+      - cp /tmp/just/completions/just.bash /usr/share/bash-completion/completions/just
+      - cp /tmp/just/completions/just.fish /usr/share/fish/completions/just.fish
+      - rm /tmp/just-x86_64-unknown-linux-musl.tar.gz
+      - rm -r /tmp/just/
+      ## Swing Music
+      - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/swingmx/swingmusic/releases/latest)) && curl -fLs https://github.com/swingmx/swingmusic/releases/download/${VER}/swingmusic_linux_amd64 -o /tmp/swingmusic"
+      - cp /tmp/swingmusic /usr/bin/swingmusic && chmod 0755 /usr/bin/swingmusic
+      - rm /tmp/swingmusic
+      # Icons
+      ## Netflix
+      - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg" -o /tmp/netflix.svg
+      - cp /tmp/netflix.svg /usr/share/icons/hicolor/scalable/netflix.svg && rm /tmp/netflix.svg
+      ## Prime Video
+      - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/7/7c/Amazon_Prime_Video_blue_logo_1.svg" -o /tmp/prime-video.svg
+      - cp /tmp/prime-video.svg /usr/share/icons/hicolor/scalable/prime-video.svg && rm /tmp/prime-video.svg
+      ## YouTube
+      - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/c/c5/YouTube_social_red_squircle_%282024%29.svg" -o /tmp/youtube.svg
+      - cp /tmp/youtube.svg /usr/share/icons/hicolor/scalable/youtube.svg && rm /tmp/youtube.svg
+  
+  - type: dnf
+    remove:
+      packages:
+        # Remove flex-launcher build dependencies
+        - SDL2-devel
+        - SDL2_image-devel
+        - SDL2_ttf-devel
+        - inih-devel
+        - automake
+        - make
+        - cmake
+        - gcc-c++
+
+  - type: files
+    files:
+      - source: couchpotato
+        destination: /
+
+  - type: systemd
+    user:
+      enabled:
+        - pipewire.service
+        - pipewire-pulse.service
+        - wireplumber.service
+        # Automatically launch moonlight within Cage upon boot
+        # - moonlight-in-cage.service
+        # Automatically launch flex-launcher upon boot
+        # - autostart-flex-launcher.service
+        # Automatically launch swingmusic as system service
+        # - swingmusic.service # TODO
+    system:
+      # disabled:
+        # - getty@$tty1.service # TODO, or README
+      enabled:
+        # Automatically logs in to the default user account
+        # - autologin@$(whoami).service # TODO, or README
+        - cockpit.socket
+        - seatd.service   
+  
+  - type: signing
