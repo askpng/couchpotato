@@ -90,7 +90,16 @@ modules:
         - make
         - cmake
         - gcc-c++
-        - git    
+        - git
+        # opengamepadui
+        - glibc
+        - libevdev
+        - libX11
+        - libXau
+        - libXdmcp
+        - libXext
+        - libXres
+        - mangohud
 
   - type: script
     snippets:
@@ -123,6 +132,8 @@ modules:
       - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/pythops/bluetui/releases/latest)) && curl -fLs https://github.com/pythops/bluetui/releases/download/${VER}/bluetui-x86_64-linux-gnu  -o /tmp/bluetui"
       - cp /tmp/bluetui /usr/bin/bluetui && chmod 0755 /usr/bin/bluetui
       - rm /tmp/bluetui
+      ## opengamepadui
+      - 'dnf5 install -y https://github.com/ShadowBlip/OpenGamepadUI/releases/latest/download/opengamepadui-$(curl https://api.github.com/repos/ShadowBlip/OpenGamepadUI/releases/latest | grep tag_name | cut -d : -f2 | tr -d "v\", ")-1.x86_64.rpm -y'
       ## just
       - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/casey/just/releases/latest)) && curl -fLs --create-dirs https://github.com/casey/just/releases/download/${VER}/just-${VER}-x86_64-unknown-linux-musl.tar.gz -o /tmp/just-x86_64-unknown-linux-musl.tar.gz"
       - "mkdir -p /tmp/just && tar -xzf /tmp/just-x86_64-unknown-linux-musl.tar.gz -C /tmp/just/"
@@ -142,6 +153,9 @@ modules:
       ## Prime Video
       - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/7/7c/Amazon_Prime_Video_blue_logo_1.svg" -o /tmp/prime-video.svg
       - cp /tmp/prime-video.svg /usr/share/icons/hicolor/scalable/prime-video.svg && rm /tmp/prime-video.svg
+      ## Steam
+      - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" -o /tmp/steam.svg
+      - cp /tmp/steam.svg /usr/share/icons/hicolor/scalable/steam.svg && rm /tmp/steam.svg      
       ## YouTube
       - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/c/c5/YouTube_social_red_squircle_%282024%29.svg" -o /tmp/youtube.svg
       - cp /tmp/youtube.svg /usr/share/icons/hicolor/scalable/youtube.svg && rm /tmp/youtube.svg
@@ -157,7 +171,6 @@ modules:
         - automake
         - make
         - cmake
-        - gcc-c++
 
   - type: files
     files:
