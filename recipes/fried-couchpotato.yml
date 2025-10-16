@@ -68,8 +68,6 @@ modules:
         - cockpit
         - firewall-config
         - syncthing
-        ## Undervolting & TDP limit for older Intel CPUs
-        - throttled
         # Dependencies
         ## AppImage
         - fuse
