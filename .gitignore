@@ -1,3 +1,6 @@
 cosign.key
 cosign.private
 /Containerfile
+.bluebuild-*
+tmp.*
+*.tmp
