@@ -152,7 +152,7 @@ modules:
       - "mkdir -p /tmp/sgdboop && tar -xzf /tmp/sgdboop-linux64.tar.gz -C /tmp/sgdboop/"
       - cp -p /tmp/sgdboop/SGDBoop /usr/local/bin/SGDBoop && chmod 0755 /usr/local/bin/SGDBoop
       - cp -p /tmp/sgdboop/com.steamgriddb.SGDBoop.desktop /usr/share/applications/com.steamgriddb.SGDBoop.desktop
-      - rm -r /tmp/sdgboop
+      - rm -r /tmp/sgdboop
       ## Swing Music
       - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/swingmx/swingmusic/releases/latest)) && curl -fLs https://github.com/swingmx/swingmusic/releases/download/${VER}/swingmusic_linux_amd64 -o /tmp/swingmusic"
       - cp /tmp/swingmusic /usr/bin/swingmusic && chmod 0755 /usr/bin/swingmusic
