@@ -24,5 +24,5 @@ systemd-run --user \
 # Kills flex-launcher service to return to tty1
 systemctl --user stop "${FLEX_SERVICE}"
 
-# 4) Exit so this script’s process inside Cage dies
+# Exit so this script's process inside Cage dies
 exit 0
