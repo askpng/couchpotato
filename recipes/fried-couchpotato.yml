@@ -148,16 +148,16 @@ modules:
       # Icons
       ## Netflix
       - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg" -o /tmp/netflix.svg
-      - cp /tmp/netflix.svg /usr/share/icons/hicolor/scalable/netflix.svg && rm /tmp/netflix.svg
+      - cp /tmp/netflix.svg /usr/share/icons/hicolor/scalable/apps/netflix.svg && rm /tmp/netflix.svg
       ## Prime Video
       - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/7/7c/Amazon_Prime_Video_blue_logo_1.svg" -o /tmp/prime-video.svg
-      - cp /tmp/prime-video.svg /usr/share/icons/hicolor/scalable/prime-video.svg && rm /tmp/prime-video.svg
+      - cp /tmp/prime-video.svg /usr/share/icons/hicolor/scalable/apps/prime-video.svg && rm /tmp/prime-video.svg
       ## Steam
       - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" -o /tmp/steam.svg
-      - cp /tmp/steam.svg /usr/share/icons/hicolor/scalable/steam.svg && rm /tmp/steam.svg      
+      - cp /tmp/steam.svg /usr/share/icons/hicolor/scalable/apps/steam.svg && rm /tmp/steam.svg      
       ## YouTube
       - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/c/c5/YouTube_social_red_squircle_%282024%29.svg" -o /tmp/youtube.svg
-      - cp /tmp/youtube.svg /usr/share/icons/hicolor/scalable/youtube.svg && rm /tmp/youtube.svg
+      - cp /tmp/youtube.svg /usr/share/icons/hicolor/scalable/apps/youtube.svg && rm /tmp/youtube.svg
       # Misc
       - setcap cap_sys_admin+ep /usr/bin/gamescope
   

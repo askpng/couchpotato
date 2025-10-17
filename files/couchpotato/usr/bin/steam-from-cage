@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# Services and binaries
+FLEX_SERVICE="autostart-flex-launcher.service"
+GAMESCOPE="/usr/bin/gamescope"
+STEAM="/usr/bin/steam"
+
+# Wait 1 second, then launch Steam via Gamescope
+systemd-run --user \
+  --unit=steam-session \
+  --property=KillMode=none \
+  --description="Detached Steam via Gamescope" \
+  bash -lc '
+    # give Cage time to die
+    sleep 1
+
+    # run Steam under Gamescope (no exec)
+    "'"${GAMESCOPE}"'" -e -f -- "'"${STEAM}"'" -tenfoot
+
+    # once Steam exits, restart the flex-launcher service
+    systemctl --user restart '"${FLEX_SERVICE}"'
+  ' >/dev/null 2>&1 &
+
+# Kills flex-launcher service to return to tty1
+systemctl --user stop "${FLEX_SERVICE}"
+
+# 4) Exit so this script’s process inside Cage dies
+exit 0

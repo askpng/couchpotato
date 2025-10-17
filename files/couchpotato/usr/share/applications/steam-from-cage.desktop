@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Steam
+Comment=Start Steam with Gamescope. Used to launch Steam Tenfoot from within Cage-Flex-launcher.
+Exec=/usr/bin/steam-from-cage
+Type=Application
