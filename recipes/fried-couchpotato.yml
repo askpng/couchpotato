@@ -34,7 +34,8 @@ modules:
         - pipewire-plugin-vulkan
         - vulkan-loader
         - vulkan-headers
-        - vulkan-tools        
+        - vulkan-tools
+        - xdg-utils    
         # HTPC Packages
         ## Essentials
         - cage
@@ -99,6 +100,11 @@ modules:
         - libXext
         - libXres
         - mangohud
+        # waydroid
+        - android-tools
+        - bindfs
+        - python3-pyclip
+        - waydroid
 
   - type: script
     snippets:
@@ -141,6 +147,12 @@ modules:
       - cp /tmp/just/completions/just.fish /usr/share/fish/completions/just.fish
       - rm /tmp/just-x86_64-unknown-linux-musl.tar.gz
       - rm -r /tmp/just/
+      ## SGDBoop
+      - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/SteamGridDB/SGDBoop/releases/latest)) && curl -fLs --create-dirs https://github.com/SteamGridDB/SGDBoop/releases/download/${VER}/sgdboop-linux64.tar.gz  -o /tmp/sgdboop-linux64.tar.gz"
+      - "mkdir -p /tmp/sgdboop && tar -xzf /tmp/sgdboop-linux64.tar.gz -C /tmp/sgdboop/"
+      - cp -p /tmp/sgdboop/SGDBoop /usr/local/bin/SGDBoop && chmod 0755 /usr/local/bin/SGDBoop
+      - cp -p /tmp/sgdboop/com.steamgriddb.SGDBoop.desktop /usr/share/applications/com.steamgriddb.SGDBoop.desktop
+      - rm -r /tmp/sdgboop
       ## Swing Music
       - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/swingmx/swingmusic/releases/latest)) && curl -fLs https://github.com/swingmx/swingmusic/releases/download/${VER}/swingmusic_linux_amd64 -o /tmp/swingmusic"
       - cp /tmp/swingmusic /usr/bin/swingmusic && chmod 0755 /usr/bin/swingmusic
