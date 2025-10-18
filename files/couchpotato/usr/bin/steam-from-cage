@@ -1,28 +1,32 @@
 #!/usr/bin/env bash
 
-# Services and binaries
-FLEX_SERVICE="autostart-flex-launcher.service"
+# This binary is only used to launch Steam from within Cage.
+# flex-launcher service must be stopped so that Gamescope can take over,
+# and restarted after Steam is exited.
+
+LAUNCHER_SERVICE="autostart-flex-launcher.service"
+
 GAMESCOPE="/usr/bin/gamescope"
 STEAM="/usr/bin/steam"
 
-# Wait 1 second, then launch Steam via Gamescope
+# Use systemd-run so that the script continues even after Cage dies
 systemd-run --user \
   --unit=steam-session \
   --property=KillMode=none \
   --description="Detached Steam via Gamescope" \
   bash -lc '
-    # give Cage time to die
+    # Let Cage die. Wait 1s
     sleep 1
 
-    # run Steam under Gamescope (no exec)
-    "'"${GAMESCOPE}"'" -e -f -- "'"${STEAM}"'" -tenfoot
+    # Run Steam Deck-mode Steam via Gamescope with mangoapp
+    /usr/bin/gamescope -e -f --mangoapp -- /usr/bin/steam -steamdeck -steamos3
 
-    # once Steam exits, restart the flex-launcher service
-    systemctl --user restart '"${FLEX_SERVICE}"'
+    # Restart the flex-launcher service once Steam exits
+    systemctl --user restart '"${LAUNCHER_SERVICE}"'
   ' >/dev/null 2>&1 &
 
 # Kills flex-launcher service to return to tty1
-systemctl --user stop "${FLEX_SERVICE}"
+systemctl --user stop "${LAUNCHER_SERVICE}"
 
 # Exit so this script's process inside Cage dies
 exit 0

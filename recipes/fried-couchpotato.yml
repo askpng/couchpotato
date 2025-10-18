@@ -62,6 +62,7 @@ modules:
         - google-noto-sans-mono-cjk-vf-fonts        
         # Gamescope
         - gamescope
+        - mangohud        
         - steam
         ## Internet & Management
         - chromium
@@ -91,15 +92,6 @@ modules:
         - cmake
         - gcc-c++
         - git
-        # opengamepadui
-        - glibc
-        - libevdev
-        - libX11
-        - libXau
-        - libXdmcp
-        - libXext
-        - libXres
-        - mangohud
         # waydroid
         - android-tools
         - bindfs
@@ -108,19 +100,14 @@ modules:
 
   - type: script
     snippets:
+      - setcap cap_sys_admin+ep /usr/bin/gamescope    
       # opengamepadui - Install from rpm
       - 'dnf5 install -y https://github.com/ShadowBlip/OpenGamepadUI/releases/latest/download/opengamepadui-$(curl https://api.github.com/repos/ShadowBlip/OpenGamepadUI/releases/latest | grep tag_name | cut -d : -f2 | tr -d "v\", ")-1.x86_64.rpm -y'    
-      # gamescope-session files
-      # - git clone https://github.com/ChimeraOS/gamescope-session.git /tmp/gamescope-session
-      # - cp -r /tmp/gamescope-session/usr/bin /usr
-      # - cp -r /tmp/gamescope-session/usr/lib /usr
-      # - cp -r /tmp/gamescope-session/usr/share /usr
-      # - rm -r /tmp/gamescope-session
-      # opengamepadui-session files
-      # - git clone https://github.com/ShadowBlip/gamescope-session-opengamepadui.git /tmp/opengamepadui
-      # - cp -r /tmp/opengamepadui/usr/bin /usr
-      # - cp -r /tmp/opengamepadui/usr/share /usr
-      # - rm -r /tmp/opengamepadui
+      # SteamOS files
+      - git clone https://github.com/shahnawazshahin/steam-using-gamescope-guide.git /tmp/gamescope-files
+      ## only copy /usr/bin files, we do not need /usr/share files
+      - cp -r /tmp/gamescope-files/usr/bin /usr
+      - rm -r /tmp/gamescope-files
       # flex-launcher - clone & build
       # TODO - need to find a better way to build this
       - git clone https://github.com/complexlogic/flex-launcher.git /tmp/flex-launcher && mkdir -p /tmp/flex-launcher/build
@@ -170,8 +157,6 @@ modules:
       ## YouTube
       - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/c/c5/YouTube_social_red_squircle_%282024%29.svg" -o /tmp/youtube.svg
       - cp /tmp/youtube.svg /usr/share/icons/hicolor/scalable/apps/youtube.svg && rm /tmp/youtube.svg
-      # Misc
-      - setcap cap_sys_admin+ep /usr/bin/gamescope
   
   - type: dnf
     remove:

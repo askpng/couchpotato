@@ -77,3 +77,4 @@ setup-waydroid:
           echo "sudo systemctl disable --now waydroid-container.service"
           sudo systemctl disable --now waydroid-container.service
           echo "Waydroid has been reset! Re-initialize to get it back up and running."
+     fi
