@@ -19,7 +19,7 @@ systemd-run --user \
     sleep 1
 
     # Run Steam Deck-mode Steam via Gamescope with mangoapp
-    /usr/bin/gamescope -e -f --mangoapp -- /usr/bin/steam -steamdeck -steamos3
+    /usr/bin/gamescope -e -r 60 --mangoapp -- /usr/bin/steam -steamdeck -steamos3
 
     # Restart the flex-launcher service once Steam exits
     systemctl --user restart '"${LAUNCHER_SERVICE}"'

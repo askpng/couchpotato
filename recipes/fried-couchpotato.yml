@@ -12,10 +12,13 @@ modules:
     repos:
       cleanup: true
       copr:
-        - ferdiu/moonlight    
+        - bazzite-org/bazzite-multilib
+        - bazzite-org/bazzite               
+        - ferdiu/moonlight
       nonfree: rpmfusion # for libva-intel-driver as fedora-multimedia doesn't seem to ship older intel drivers
     install:
       install-weak-deps: false
+      allow-erasing: true
       packages:
         # Graphics
         - ffmpeg
@@ -39,11 +42,15 @@ modules:
         # HTPC Packages
         ## Essentials
         - cage
+        - cpuinfo
         - fish
         - grim
         - lm_sensors
         - moonlight-qt
         - seatd
+        - steam
+        - tuned
+        - upower
         ## Audio & Video
         - pipewire
         - pipewire-utils
@@ -61,17 +68,19 @@ modules:
         - google-noto-serif-cjk-vf-fonts
         - google-noto-sans-mono-cjk-vf-fonts        
         # Gamescope
-        - gamescope
-        - mangohud        
-        - steam
-        ## opengamepadgui dependencies - without these gamescope lags?
-        - glibc
-        - libevdev
-        - libX11
-        - libXau
-        - libXdmcp
-        - libXext
-        - libXres        
+        - gamescope-libs
+        - gamescope-shaders         
+        - extest.i686   
+        - libeis
+        - libXres
+        - luajit
+        - mangohud
+        - repo: copr:copr.fedorainfracloud.org:bazzite-org:bazzite-multilib
+          packages:        
+          - gamescope.x86_64       
+        # - repo: copr:copr.fedorainfracloud.org:bazzite-org:bazzite
+        #   packages:
+        #   - ryzenadj   
         ## Internet & Management
         - chromium
         - cockpit
@@ -107,8 +116,7 @@ modules:
         - waydroid
 
   - type: script
-    snippets:
-      - setcap cap_sys_admin+ep /usr/bin/gamescope    
+    snippets:  
       # SteamOS files
       - git clone https://github.com/shahnawazshahin/steam-using-gamescope-guide.git /tmp/gamescope-files
       ## only copy /usr/bin files, we do not need /usr/share files
