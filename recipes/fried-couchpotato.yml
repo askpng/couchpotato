@@ -64,6 +64,14 @@ modules:
         - gamescope
         - mangohud        
         - steam
+        ## opengamepadgui dependencies - without these gamescope lags?
+        - glibc
+        - libevdev
+        - libX11
+        - libXau
+        - libXdmcp
+        - libXext
+        - libXres        
         ## Internet & Management
         - chromium
         - cockpit
@@ -101,8 +109,6 @@ modules:
   - type: script
     snippets:
       - setcap cap_sys_admin+ep /usr/bin/gamescope    
-      # opengamepadui - Install from rpm
-      - 'dnf5 install -y https://github.com/ShadowBlip/OpenGamepadUI/releases/latest/download/opengamepadui-$(curl https://api.github.com/repos/ShadowBlip/OpenGamepadUI/releases/latest | grep tag_name | cut -d : -f2 | tr -d "v\", ")-1.x86_64.rpm -y'    
       # SteamOS files
       - git clone https://github.com/shahnawazshahin/steam-using-gamescope-guide.git /tmp/gamescope-files
       ## only copy /usr/bin files, we do not need /usr/share files
