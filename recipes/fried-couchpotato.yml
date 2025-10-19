@@ -49,6 +49,8 @@ modules:
         - moonlight-qt
         - seatd
         - steam
+        - stress
+        - stress-ng
         - tuned
         - upower
         - weston
