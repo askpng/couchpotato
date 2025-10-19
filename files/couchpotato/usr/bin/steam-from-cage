@@ -15,11 +15,15 @@ systemd-run --user \
   --property=KillMode=none \
   --description="Detached Steam via Gamescope" \
   bash -lc '
-    # Let Cage die. Wait 1s
-    sleep 1
+    # Let Cage die. Wait 0.5s
+    sleep 0.5
 
     # Run Steam Deck-mode Steam via Gamescope with mangoapp
-    /usr/bin/gamescope -e -r 60 --mangoapp -- /usr/bin/steam -steamdeck -steamos3
+    /usr/bin/gamescope \
+       --backend sdl \
+       -f -e -r 60 \
+       --mangoapp -- \
+       /usr/bin/steam -steamdeck -steamos3
 
     # Restart the flex-launcher service once Steam exits
     systemctl --user restart '"${LAUNCHER_SERVICE}"'
