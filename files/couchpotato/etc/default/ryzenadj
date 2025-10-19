@@ -13,29 +13,29 @@
 # PM Table Version: 1e0004
 # |        Name         |   Value   |     Parameter      |
 # |---------------------|-----------|--------------------|
-# | STAPM LIMIT         |    30.000 | stapm-limit        |
-# | STAPM VALUE         |     6.115 |                    |
-# | PPT LIMIT FAST      |    40.500 | fast-limit         |
-# | PPT VALUE FAST      |     6.147 |                    |
-# | PPT LIMIT SLOW      |    40.500 | slow-limit         |
-# | PPT VALUE SLOW      |     6.134 |                    |
+# | STAPM LIMIT         |    65.000 | stapm-limit        |
+# | STAPM VALUE         |     6.237 |                    |
+# | PPT LIMIT FAST      |    88.000 | fast-limit         |
+# | PPT VALUE FAST      |     6.321 |                    |
+# | PPT LIMIT SLOW      |    88.000 | slow-limit         |
+# | PPT VALUE SLOW      |     6.297 |                    |
 # | StapmTimeConst      |   100.000 | stapm-time         |
 # | SlowPPTTimeConst    |     5.000 | slow-time          |
 # | PPT LIMIT APU       |       nan | apu-slow-limit     |
 # | PPT VALUE APU       |       nan |                    |
 # | TDC LIMIT VDD       |    65.000 | vrm-current        |
-# | TDC VALUE VDD       |     0.702 |                    |
+# | TDC VALUE VDD       |     0.960 |                    |
 # | TDC LIMIT SOC       |    50.000 | vrmsoc-current     |
-# | TDC VALUE SOC       |     3.805 |                    |
+# | TDC VALUE SOC       |     3.151 |                    |
 # | EDC LIMIT VDD       |    95.000 | vrmmax-current     |
-# | EDC VALUE VDD       |    68.309 |                    |
+# | EDC VALUE VDD       |    93.578 |                    |
 # | EDC LIMIT SOC       |    75.000 | vrmsocmax-current  |
-# | EDC VALUE SOC       |     9.384 |                    |
+# | EDC VALUE SOC       |    36.205 |                    |
 # | THM LIMIT CORE      |    95.000 | tctl-temp          |
-# | THM VALUE CORE      |    33.262 |                    |
+# | THM VALUE CORE      |    32.596 |                    |
 # | STT LIMIT APU       |       nan | apu-skin-temp      |
 # | STT VALUE APU       |       nan |                    |
 # | STT LIMIT dGPU      |       nan | dgpu-skin-temp     |
 # | STT VALUE dGPU      |       nan |                    |
 # | CCLK Boost SETPOINT |    30.000 | power-saving /     |
-# | CCLK BUSY VALUE     |     8.024 | max-performance    |
+# | CCLK BUSY VALUE     |    10.246 | max-performance    |

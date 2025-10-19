@@ -51,6 +51,7 @@ modules:
         - steam
         - tuned
         - upower
+        - weston
         ## Audio & Video
         - pipewire
         - pipewire-utils
