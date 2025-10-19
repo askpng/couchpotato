@@ -78,9 +78,9 @@ modules:
         - repo: copr:copr.fedorainfracloud.org:bazzite-org:bazzite-multilib
           packages:        
           - gamescope.x86_64       
-        # - repo: copr:copr.fedorainfracloud.org:bazzite-org:bazzite
-        #   packages:
-        #   - ryzenadj   
+        - repo: copr:copr.fedorainfracloud.org:bazzite-org:bazzite
+          packages:
+          - ryzenadj   
         ## Internet & Management
         - chromium
         - cockpit
