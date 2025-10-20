@@ -22,6 +22,7 @@ systemd-run --user \
     /usr/bin/gamescope \
        --backend sdl \
        -f -e -r 60 \
+       --force-grab-cursor \
        --mangoapp -- \
        /usr/bin/steam -steamdeck -steamos3
 
