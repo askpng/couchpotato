@@ -47,6 +47,7 @@ modules:
         - fish
         - flatpak
         - fzf
+        - git
         - grim
         - lm_sensors
         - pciutils
