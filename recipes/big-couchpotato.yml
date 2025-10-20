@@ -1,8 +1,8 @@
 ---
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
 
-name: fried-couchpotato
-description: Light image with entertainment and game streaming capabilities.
+name: big-couchpotato
+description: Light image with entertainment, game streaming, and local gaming capabilities.
 
 base-image: quay.io/fedora/fedora-bootc
 image-version: 42
@@ -45,12 +45,13 @@ modules:
         - cage
         - cpuinfo
         - fish
+        - flatpak
         - grim
         - lm_sensors
         - moonlight-qt
         - seatd
         - steam
-        - stress
+        - s-tui
         - stress-ng
         - tuned
         - upower
@@ -65,6 +66,7 @@ modules:
         - wireplumber
         ## Bluetooth & Controllers
         - bluez
+        - blueman
         - evtest
         - python3-evdev        
         - steam-devices
