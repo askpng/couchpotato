@@ -15,7 +15,7 @@ modules:
         - bazzite-org/bazzite-multilib
         - bazzite-org/bazzite               
         - ferdiu/moonlight
-      nonfree: rpmfusion # for libva-intel-driver as fedora-multimedia doesn't seem to ship older intel drivers
+      nonfree: rpmfusion 
     install:
       install-weak-deps: false
       allow-erasing: true
@@ -30,10 +30,9 @@ modules:
         - gstreamer1-plugins-bad-freeworld
         - gstreamer1-plugins-ugly
         - gstreamer1-vaapi
+        - intel-media-driver
         - libavcodec-freeworld
         - libva
-        - libva-intel-driver
-        - intel-media-driver
         - mesa-va-drivers-freeworld
         - mesa-vulkan-drivers
         - pipewire-plugin-vulkan
@@ -50,10 +49,8 @@ modules:
         - lm_sensors
         - moonlight-qt
         - seatd
-        - repo: copr:copr.fedorainfracloud.org:bazzite-org:bazzite
-          packages:
-          - ryzenadj          
-        - s-tui
+        - steam
+        - stress
         - stress-ng
         - tuned
         - upower
@@ -73,7 +70,21 @@ modules:
         - steam-devices
         ## CJK fonts
         - google-noto-serif-cjk-vf-fonts
-        - google-noto-sans-mono-cjk-vf-fonts 
+        - google-noto-sans-mono-cjk-vf-fonts        
+        # Gamescope
+        - gamescope-libs
+        - gamescope-shaders         
+        - extest.i686   
+        - libeis
+        - libXres
+        - luajit
+        - mangohud
+        - repo: copr:copr.fedorainfracloud.org:bazzite-org:bazzite-multilib
+          packages:        
+          - gamescope.x86_64       
+        - repo: copr:copr.fedorainfracloud.org:bazzite-org:bazzite
+          packages:
+          - ryzenadj   
         ## Internet & Management
         - chromium
         - cockpit
