@@ -88,35 +88,11 @@ modules:
         - qt6-qtwayland
         - xdg-user-dirs
         - xwayland-run
-        ## flex-launcher
-        - SDL2
-        - SDL2_image
-        - SDL2_ttf
-        ## Build flex-launcher
-        - SDL2-devel
-        - SDL2_image-devel
-        - SDL2_ttf-devel
-        - inih-devel
-        - automake
-        - make
-        - cmake
-        - gcc-c++
-        - git
+
+  - from-file: phase/flex-launcher.yml
 
   - type: script
     snippets:  
-      # SteamOS files
-      - git clone https://github.com/shahnawazshahin/steam-using-gamescope-guide.git /tmp/gamescope-files
-      ## only copy /usr/bin files, we do not need /usr/share files
-      - cp -r /tmp/gamescope-files/usr/bin /usr
-      - rm -r /tmp/gamescope-files
-      # flex-launcher - clone & build
-      # TODO - need to find a better way to build this
-      - git clone https://github.com/complexlogic/flex-launcher.git /tmp/flex-launcher && mkdir -p /tmp/flex-launcher/build
-      - cd /tmp/flex-launcher/build
-      - cmake /tmp/flex-launcher -DCMAKE_BUILD_TYPE=Release && make install
-      - rm -r /tmp/flex-launcher 
-      - mv /usr/local/share/flex-launcher/config.ini /usr/local/share/flex-launcher/config_default.ini
       # AppImages
       ## VacuumTube
       - curl -fLs https://github.com/shy1132/VacuumTube/releases/latest/download/VacuumTube-x86_64.AppImage -o /tmp/vacuumtube.AppImage
@@ -136,16 +112,6 @@ modules:
       - cp /tmp/just/completions/just.fish /usr/share/fish/completions/just.fish
       - rm /tmp/just-x86_64-unknown-linux-musl.tar.gz
       - rm -r /tmp/just/
-      ## SGDBoop
-      - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/SteamGridDB/SGDBoop/releases/latest)) && curl -fLs --create-dirs https://github.com/SteamGridDB/SGDBoop/releases/download/${VER}/sgdboop-linux64.tar.gz  -o /tmp/sgdboop-linux64.tar.gz"
-      - "mkdir -p /tmp/sgdboop && tar -xzf /tmp/sgdboop-linux64.tar.gz -C /tmp/sgdboop/"
-      - cp -p /tmp/sgdboop/SGDBoop /usr/local/bin/SGDBoop && chmod 0755 /usr/local/bin/SGDBoop
-      - cp -p /tmp/sgdboop/com.steamgriddb.SGDBoop.desktop /usr/share/applications/com.steamgriddb.SGDBoop.desktop
-      - rm -r /tmp/sgdboop
-      ## Swing Music
-      - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/swingmx/swingmusic/releases/latest)) && curl -fLs https://github.com/swingmx/swingmusic/releases/download/${VER}/swingmusic_linux_amd64 -o /tmp/swingmusic"
-      - cp /tmp/swingmusic /usr/bin/swingmusic && chmod 0755 /usr/bin/swingmusic
-      - rm /tmp/swingmusic
       # Icons
       ## Netflix
       - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg" -o /tmp/netflix.svg
@@ -159,18 +125,6 @@ modules:
       ## YouTube
       - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/c/c5/YouTube_social_red_squircle_%282024%29.svg" -o /tmp/youtube.svg
       - cp /tmp/youtube.svg /usr/share/icons/hicolor/scalable/apps/youtube.svg && rm /tmp/youtube.svg
-  
-  - type: dnf
-    remove:
-      packages:
-        # Remove flex-launcher build dependencies
-        - SDL2-devel
-        - SDL2_image-devel
-        - SDL2_ttf-devel
-        - inih-devel
-        - automake
-        - make
-        - cmake
 
   - type: files
     files:

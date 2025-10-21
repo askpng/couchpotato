@@ -42,7 +42,6 @@ modules:
         - xdg-utils    
         # HTPC Packages
         ## Essentials
-        # - cage
         - cpuinfo
         - fish
         - flatpak
@@ -58,6 +57,7 @@ modules:
         - stress-ng
         - tuned
         - upower
+        - usbutils
         - weston
         ## Audio & Video
         - pipewire
@@ -99,44 +99,20 @@ modules:
         - ifuse
         ## Cage & Moonlight
         - libxcb
-        # - qt6-qtwayland
         - xdg-user-dirs
         - xwayland-run
-        # ## flex-launcher
-        # - SDL2
-        # - SDL2_image
-        # - SDL2_ttf
-        # ## Build flex-launcher
-        # - SDL2-devel
-        # - SDL2_image-devel
-        # - SDL2_ttf-devel
-        # - inih-devel
-        # - automake
-        # - make
-        # - cmake
-        # - gcc-c++
-        # - git
 
   - type: script
-    snippets:  
+    snippets:
+      # Wallpaper
+      - curl -fLs "https://github.com/fedoradesign/backgrounds/blob/57a8b2c6fdd425850a2809232d575301977e9e53/extras/01-dark-blue.png" -o /tmp/blue-wallpaper.png
+      - cp /tmp/blue-wallpaper.png /usr/share/weston/blue-wallpaper.png
+      - rm /tmp/blue-wallpaper.png
       # SteamOS files
       - git clone https://github.com/shahnawazshahin/steam-using-gamescope-guide.git /tmp/gamescope-files
       ## only copy /usr/bin files, we do not need /usr/share files
       - cp -r /tmp/gamescope-files/usr/bin /usr
       - rm -r /tmp/gamescope-files
-      # flex-launcher - clone & build
-      # # TODO - need to find a better way to build this
-      # - git clone https://github.com/complexlogic/flex-launcher.git /tmp/flex-launcher && mkdir -p /tmp/flex-launcher/build
-      # - cd /tmp/flex-launcher/build
-      # - cmake /tmp/flex-launcher -DCMAKE_BUILD_TYPE=Release && make install
-      # - rm -r /tmp/flex-launcher 
-      # - mv /usr/local/share/flex-launcher/config.ini /usr/local/share/flex-launcher/config_default.ini
-      # AppImages
-      # ## VacuumTube
-      # - curl -fLs https://github.com/shy1132/VacuumTube/releases/latest/download/VacuumTube-x86_64.AppImage -o /tmp/vacuumtube.AppImage
-      # - cp /tmp/vacuumtube.AppImage /usr/bin/vacuumtube.AppImage && chmod 0755 /usr/bin/vacuumtube.AppImage
-      # - ln -s /usr/bin/vacuumtube.AppImage /usr/bin/vacuumtube
-      # - rm /tmp/vacuumtube.AppImage   
       # Binaries
       ## bluetui
       - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/pythops/bluetui/releases/latest)) && curl -fLs https://github.com/pythops/bluetui/releases/download/${VER}/bluetui-x86_64-linux-gnu  -o /tmp/bluetui"
@@ -174,18 +150,6 @@ modules:
       - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/c/c5/YouTube_social_red_squircle_%282024%29.svg" -o /tmp/youtube.svg
       - cp /tmp/youtube.svg /usr/share/icons/hicolor/scalable/apps/youtube.svg && rm /tmp/youtube.svg
 
-  # - type: dnf
-  #   remove:
-  #     packages:
-  #       # Remove flex-launcher build dependencies
-  #       - SDL2-devel
-  #       - SDL2_image-devel
-  #       - SDL2_ttf-devel
-  #       - inih-devel
-  #       - automake
-  #       - make
-  #       - cmake
-
   - type: default-flatpaks
     configurations:
     - notify: true
@@ -198,6 +162,11 @@ modules:
   - type: files
     files:
       - source: couchpotato
+        destination: /
+
+  - type: files
+    files:
+      - source: big-couchpotato
         destination: /
 
   - type: systemd

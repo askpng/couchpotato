@@ -1,0 +1,42 @@
+modules:
+  - type: dnf
+    install:
+      install-weak-deps: false
+      skip-unavailable: false
+      skip-broken: false
+      allow-erasing: false
+      packages:
+        ## flex-launcher
+        - SDL2
+        - SDL2_image
+        - SDL2_ttf
+        ## Build flex-launcher
+        - SDL2-devel
+        - SDL2_image-devel
+        - SDL2_ttf-devel
+        - inih-devel
+        - automake
+        - make
+        - cmake
+        - gcc-c++
+        - git
+  - type: script
+    snippets:
+      # flex-launcher - clone & build
+      # TODO - need to find a better way to build this
+      - git clone https://github.com/complexlogic/flex-launcher.git /tmp/flex-launcher && mkdir -p /tmp/flex-launcher/build
+      - cd /tmp/flex-launcher/build
+      - cmake /tmp/flex-launcher -DCMAKE_BUILD_TYPE=Release && make install
+      - rm -r /tmp/flex-launcher 
+      - mv /usr/local/share/flex-launcher/config.ini /usr/local/share/flex-launcher/config_default.ini
+  - type: dnf
+    remove:
+      packages:
+        # Remove flex-launcher build dependencies
+        - SDL2-devel
+        - SDL2_image-devel
+        - SDL2_ttf-devel
+        - inih-devel
+        - automake
+        - make
+        - cmake
