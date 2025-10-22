@@ -5,7 +5,7 @@ LAUNCHER_SERVICE="flex-launcher.service"
 # Use systemd-run so that the script continues even after the launcher dies
 systemd-run --user \
   --unit=steam-session \
-  --property=KillMode=none \
+  --property=KillMode=control-group \
   --description="Detached Steam via Gamescope" \
   bash -lc '
     # Let flex-launcher die. Wait 0.5s
