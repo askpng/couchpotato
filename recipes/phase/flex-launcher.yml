@@ -1,0 +1,57 @@
+modules:
+  - type: dnf
+    install:
+      install-weak-deps: false
+      skip-unavailable: false
+      skip-broken: false
+      allow-erasing: false
+      packages:
+        ## flex-launcher
+        - SDL2
+        - SDL2_image
+        - SDL2_ttf
+        ## Build flex-launcher
+        - SDL2-devel
+        - SDL2_image-devel
+        - SDL2_ttf-devel
+        - inih-devel
+        - automake
+        - make
+        - cmake
+        - gcc-c++
+        - git
+  - type: script
+    snippets:
+      # flex-launcher - clone & build
+      - git clone https://github.com/complexlogic/flex-launcher.git /tmp/flex-launcher && mkdir -p /tmp/flex-launcher/build
+      - cd /tmp/flex-launcher/build
+      - cmake /tmp/flex-launcher -DCMAKE_BUILD_TYPE=Release && make install
+      - rm -r /tmp/flex-launcher 
+      - mv /usr/local/share/flex-launcher/config.ini /usr/local/share/flex-launcher/config_default.ini
+      # Icons
+      ## Chromium
+      - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/2/28/Chromium_Logo.svg" -o /tmp/chromium.svg
+      - cp /tmp/chromium.svg /usr/share/icons/hicolor/scalable/apps/chromium.svg && rm /tmp/chromium.svg
+      ## Netflix
+      - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg" -o /tmp/netflix.svg
+      - cp /tmp/netflix.svg /usr/share/icons/hicolor/scalable/apps/netflix.svg && rm /tmp/netflix.svg
+      ## Prime Video
+      - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/7/7c/Amazon_Prime_Video_blue_logo_1.svg" -o /tmp/prime-video.svg
+      - cp /tmp/prime-video.svg /usr/share/icons/hicolor/scalable/apps/prime-video.svg && rm /tmp/prime-video.svg
+      ## Steam
+      - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" -o /tmp/steam.svg
+      - cp /tmp/steam.svg /usr/share/icons/hicolor/scalable/apps/steam.svg && rm /tmp/steam.svg      
+      ## YouTube
+      - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/c/c5/YouTube_social_red_squircle_%282024%29.svg" -o /tmp/youtube.svg
+      - cp /tmp/youtube.svg /usr/share/icons/hicolor/scalable/apps/youtube.svg && rm /tmp/youtube.svg
+  - type: dnf
+    remove:
+      packages:
+        # Remove flex-launcher build dependencies
+        - SDL2-devel
+        - SDL2_image-devel
+        - SDL2_ttf-devel
+        - inih-devel
+        - automake
+        - make
+        - cmake

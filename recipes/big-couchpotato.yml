@@ -1,8 +1,8 @@
 ---
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
 
-name: fried-couchpotato
-description: Light image with entertainment and game streaming capabilities.
+name: big-couchpotato
+description: Light image with entertainment, game streaming, and local gaming capabilities.
 
 base-image: quay.io/fedora/fedora-bootc
 image-version: 42
@@ -12,10 +12,10 @@ modules:
     repos:
       cleanup: true
       copr:
-        - abn/throttled
-        - bazzite-org/bazzite
+        - bazzite-org/bazzite-multilib
+        - bazzite-org/bazzite               
         - ferdiu/moonlight
-      nonfree: rpmfusion
+      nonfree: rpmfusion 
     install:
       install-weak-deps: false
       allow-erasing: true
@@ -30,10 +30,9 @@ modules:
         - gstreamer1-plugins-bad-freeworld
         - gstreamer1-plugins-ugly
         - gstreamer1-vaapi
+        - intel-media-driver
         - libavcodec-freeworld
         - libva
-        - libva-intel-driver
-        - intel-media-driver
         - mesa-va-drivers-freeworld
         - mesa-vulkan-drivers
         - pipewire-plugin-vulkan
@@ -41,26 +40,29 @@ modules:
         - vulkan-headers
         - vulkan-tools
         - xdg-user-dirs        
-        - xdg-utils
+        - xdg-utils    
         # HTPC Packages
         ## Essentials
-        - cage
         - cpuinfo
         - fish
+        - flatpak
+        - fzf
+        - git
         - grim
         - lm_sensors
         - lsb_release
-        - moonlight-qt
         - pciutils
         - repo: copr:copr.fedorainfracloud.org:bazzite-org:bazzite
           packages:
-          - ryzenadj
+          - ryzenadj        
         - seatd
+        - steam
         - s-tui
         - stress-ng
         - tuned
         - upower
         - usbutils
+        - weston
         ## Audio & Video
         - pipewire
         - pipewire-utils
@@ -70,39 +72,49 @@ modules:
         - libva-utils
         - wireplumber
         ## Bluetooth & Controllers
-        - bluez
+        - blueman
         - evtest
         - python3-evdev        
         - steam-devices
         ## CJK fonts
         - google-noto-serif-cjk-vf-fonts
-        - google-noto-sans-mono-cjk-vf-fonts 
+        - google-noto-sans-mono-cjk-vf-fonts   
+        ## Gamescope     
+        - gamescope-libs
+        - gamescope-shaders         
+        - extest.i686   
+        - libeis
+        - libXres
+        - luajit
+        - mangohud
+        - repo: copr:copr.fedorainfracloud.org:bazzite-org:bazzite-multilib
+          packages:        
+          - gamescope.x86_64       
         ## Internet & Management
-        - chromium
         - cockpit
         - firewall-config
         - syncthing
-        ## Undervolting & TDP limit for older Intel CPUs
-        - throttled
         # Dependencies
         ## AppImage
         - fuse
         - ifuse
         ## Moonlight deps?
         - libxcb
-        - qt6-qtwayland
         - xwayland-run
 
-  - from-file: phase/flex-launcher.yml
+  - from-file: phase/flex-launcher.yml        
 
   - type: script
     snippets:
-      # AppImages
-      ## VacuumTube
-      - curl -fLs https://github.com/shy1132/VacuumTube/releases/latest/download/VacuumTube-x86_64.AppImage -o /tmp/vacuumtube.AppImage
-      - cp /tmp/vacuumtube.AppImage /usr/bin/vacuumtube.AppImage && chmod 0755 /usr/bin/vacuumtube.AppImage
-      - ln -s /usr/bin/vacuumtube.AppImage /usr/bin/vacuumtube
-      - rm /tmp/vacuumtube.AppImage   
+      # Wallpaper
+      - curl -fLs "https://github.com/fedoradesign/backgrounds/blob/57a8b2c6fdd425850a2809232d575301977e9e53/extras/01-dark-blue.png" -o /tmp/blue-wallpaper.png
+      - cp /tmp/blue-wallpaper.png /usr/share/weston/blue-wallpaper.png
+      - rm /tmp/blue-wallpaper.png
+      # SteamOS files
+      - git clone https://github.com/shahnawazshahin/steam-using-gamescope-guide.git /tmp/gamescope-files
+      ## only copy /usr/bin files, we do not need /usr/share files
+      - cp -r /tmp/gamescope-files/usr/bin /usr
+      - rm -r /tmp/gamescope-files
       # Binaries
       ## bluetui
       - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/pythops/bluetui/releases/latest)) && curl -fLs https://github.com/pythops/bluetui/releases/download/${VER}/bluetui-x86_64-linux-gnu  -o /tmp/bluetui"
@@ -121,11 +133,20 @@ modules:
       - cp /tmp/swingmusic /usr/bin/swingmusic && chmod 0755 /usr/bin/swingmusic
       - rm /tmp/swingmusic
 
+  - type: default-flatpaks
+    configurations:
+    - notify: true
+      scope: system
+      install:
+        - com.moonlight_stream.Moonlight
+        - com.github.tchx84.Flatseal
+        - org.chromium.Chromium
+
   - type: files
     files:
       - source: system
         destination: /
-      - source: couchpotato
+      - source: big-couchpotato
         destination: /
 
   - type: systemd
@@ -141,6 +162,6 @@ modules:
         # Automatically logs in to the default user account
         # - autologin@$(whoami).service # TODO, or README
         - cockpit.socket
-        - seatd.service   
+        - seatd.service
   
   - type: signing

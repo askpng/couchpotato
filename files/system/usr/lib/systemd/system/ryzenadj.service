@@ -1,0 +1,14 @@
+[Unit]
+Description=Software power limit for AMD APUs
+
+[Service]
+Type=oneshot
+EnvironmentFile=-/etc/default/%p
+ExecStartPre=/usr/bin/sleep 10
+ExecStart=/usr/bin/ryzenadj \
+  --stapm-limit=${STAPM_LIMIT} \
+  --fast-limit=${FAST_LIMIT} \
+  --slow-limit=${SLOW_LIMIT}
+
+[Install]
+WantedBy=multi-user.target suspend.target hibernate.target hybrid-sleep.target suspend-then-hibernate.target ac.target battery.target
