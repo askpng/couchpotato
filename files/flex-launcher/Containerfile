@@ -1,0 +1,37 @@
+# Use alpine:latest 
+FROM alpine:latest AS builder
+
+WORKDIR /
+
+# Installs flex-launcher build deps
+
+RUN apk update \
+  && apk add --no-cache \
+     sdl2-dev sdl2_image-dev sdl2_ttf-dev inih-dev automake make cmake g++ git
+
+RUN mkdir -p /src/usr/local && \
+  git clone https://github.com/complexlogic/flex-launcher.git && \
+  mkdir -p flex-launcher/build  
+
+WORKDIR flex-launcher/build
+RUN cmake .. -DCMAKE_BUILD_TYPE=Release && \
+  make && \
+  ls -l
+
+WORKDIR /
+
+# Copy results into /flex-build
+RUN mkdir -p /src/usr/local/share/flex-launcher && mkdir /src/usr/local/bin \
+  && cp -r /flex-launcher/build/assets /src/usr/local/share/flex-launcher \
+  && cp /flex-launcher/build/config.ini /src/usr/local/share/flex-launcher/config_default.ini \
+  && cp /flex-launcher/build/flex-launcher /src/usr/local/bin
+
+# Verify if the results are in the correct paths
+RUN echo "/usr/local/share/flex-launcher contents"
+RUN ls /src/usr/local/share/flex-launcher
+RUN echo "/usr/local/bin contents"
+RUN ls /src/usr/local/bin
+
+# Copy only /src to the final image
+FROM scratch AS cache
+COPY --from=builder /src /
