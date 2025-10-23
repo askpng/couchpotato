@@ -1,5 +1,5 @@
 # Use alpine:latest 
-FROM fedora-toolbox:latest AS builder
+FROM registry.fedoraproject.org/fedora-toolbox:latest AS builder
 
 WORKDIR /
 
