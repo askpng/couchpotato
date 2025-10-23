@@ -27,6 +27,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: files/flex-launcher
-          file: files/flex-launcherContainerfile
+          file: files/flex-launcher/Containerfile
           push: true
           tags: ghcr.io/askpng/flex-launcher:latest
