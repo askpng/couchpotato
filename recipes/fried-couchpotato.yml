@@ -8,6 +8,10 @@ base-image: quay.io/fedora/fedora-bootc
 image-version: 42
 
 modules:
+  - from-file: phase/kernel-and-akmods.yml
+
+  - from-file: phase/flex-launcher.yml
+
   - type: dnf
     repos:
       cleanup: true
@@ -40,7 +44,7 @@ modules:
         - vulkan-loader
         - vulkan-headers
         - vulkan-tools
-        - xdg-user-dirs        
+        - xdg-user-dirs
         - xdg-utils
         # HTPC Packages
         ## Essentials
@@ -72,11 +76,11 @@ modules:
         ## Bluetooth & Controllers
         - bluez
         - evtest
-        - python3-evdev        
+        - python3-evdev
         - steam-devices
         ## CJK fonts
         - google-noto-serif-cjk-vf-fonts
-        - google-noto-sans-mono-cjk-vf-fonts 
+        - google-noto-sans-mono-cjk-vf-fonts
         ## Internet & Management
         - chromium
         - cockpit
@@ -93,8 +97,6 @@ modules:
         - qt6-qtwayland
         - xwayland-run
 
-  - from-file: phase/flex-launcher.yml
-
   - type: script
     snippets:
       # AppImages
@@ -102,7 +104,7 @@ modules:
       - curl -fLs https://github.com/shy1132/VacuumTube/releases/latest/download/VacuumTube-x86_64.AppImage -o /tmp/vacuumtube.AppImage
       - cp /tmp/vacuumtube.AppImage /usr/bin/vacuumtube.AppImage && chmod 0755 /usr/bin/vacuumtube.AppImage
       - ln -s /usr/bin/vacuumtube.AppImage /usr/bin/vacuumtube
-      - rm /tmp/vacuumtube.AppImage   
+      - rm /tmp/vacuumtube.AppImage
       # Binaries
       ## bluetui
       - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/pythops/bluetui/releases/latest)) && curl -fLs https://github.com/pythops/bluetui/releases/download/${VER}/bluetui-x86_64-linux-gnu  -o /tmp/bluetui"
@@ -120,6 +122,24 @@ modules:
       - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/swingmx/swingmusic/releases/latest)) && curl -fLs https://github.com/swingmx/swingmusic/releases/download/${VER}/swingmusic_linux_amd64 -o /tmp/swingmusic"
       - cp /tmp/swingmusic /usr/bin/swingmusic && chmod 0755 /usr/bin/swingmusic
       - rm /tmp/swingmusic
+      # Icons
+      ## Chromium
+      - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/2/28/Chromium_Logo.svg" -o /tmp/chromium.svg
+      - cp /tmp/chromium.svg /usr/share/icons/hicolor/scalable/apps/chromium.svg && rm /tmp/chromium.svg
+      ## Netflix
+      - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg" -o /tmp/netflix.svg
+      - cp /tmp/netflix.svg /usr/share/icons/hicolor/scalable/apps/netflix.svg && rm /tmp/netflix.svg
+      - curl -L "https://upload.wikimedia.org/wikipedia/commons/0/03/Netflix-icon.png" -o /tmp/netflix.png
+      - cp /tmp/netflix.png /usr/share/icons/hicolor/512x512/apps/netflix.png
+      ## Prime Video
+      - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/7/7c/Amazon_Prime_Video_blue_logo_1.svg" -o /tmp/prime-video.svg
+      - cp /tmp/prime-video.svg /usr/share/icons/hicolor/scalable/apps/prime-video.svg && rm /tmp/prime-video.svg
+      ## Steam
+      - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" -o /tmp/steam.svg
+      - cp /tmp/steam.svg /usr/share/icons/hicolor/scalable/apps/steam.svg && rm /tmp/steam.svg
+      ## YouTube
+      - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/c/c5/YouTube_social_red_squircle_%282024%29.svg" -o /tmp/youtube.svg
+      - cp /tmp/youtube.svg /usr/share/icons/hicolor/scalable/apps/youtube.svg && rm /tmp/youtube.svg
 
   - type: files
     files:
@@ -127,6 +147,8 @@ modules:
         destination: /
       - source: couchpotato
         destination: /
+      - source: fried-couchpotato
+        destination: /        
 
   - type: systemd
     user:
@@ -141,6 +163,6 @@ modules:
         # Automatically logs in to the default user account
         # - autologin@$(whoami).service # TODO, or README
         - cockpit.socket
-        - seatd.service   
-  
+        - seatd.service
+
   - type: signing

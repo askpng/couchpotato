@@ -8,6 +8,10 @@ base-image: quay.io/fedora/fedora-bootc
 image-version: 42
 
 modules:
+  - from-file: phase/kernel-and-akmods.yml
+
+  - from-file: phase/flex-launcher.yml
+
   - type: dnf
     repos:
       cleanup: true
@@ -101,8 +105,6 @@ modules:
         ## Moonlight deps?
         - libxcb
         - xwayland-run
-
-  - from-file: phase/flex-launcher.yml        
 
   - type: script
     snippets:
