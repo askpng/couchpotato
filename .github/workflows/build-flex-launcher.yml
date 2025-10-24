@@ -29,4 +29,4 @@ jobs:
           context: files/flex-launcher
           file: files/flex-launcher/Containerfile
           push: true
-          tags: ghcr.io/askpng/flex-launcher:latest
+          tags: ghcr.io/askpng/flex-launcher:${{ github.ref_name }}

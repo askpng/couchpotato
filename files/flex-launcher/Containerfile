@@ -1,13 +1,12 @@
 # Use alpine:latest 
-FROM alpine:latest AS builder
+FROM registry.fedoraproject.org/fedora-toolbox:latest AS builder
 
 WORKDIR /
 
 # Installs flex-launcher build deps
 
-RUN apk update \
-  && apk add --no-cache \
-     sdl2-dev sdl2_image-dev sdl2_ttf-dev inih-dev automake make cmake g++ git
+RUN dnf install -y --setopt=install_weak_deps=False \
+  SDL2-devel SDL2_image-devel SDL2_ttf-devel inih-devel automake make cmake g++ git
 
 RUN mkdir -p /src/usr/local && \
   git clone https://github.com/complexlogic/flex-launcher.git && \
@@ -15,8 +14,7 @@ RUN mkdir -p /src/usr/local && \
 
 WORKDIR flex-launcher/build
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release && \
-  make && \
-  ls -l
+  make
 
 WORKDIR /
 
@@ -27,10 +25,10 @@ RUN mkdir -p /src/usr/local/share/flex-launcher && mkdir /src/usr/local/bin \
   && cp /flex-launcher/build/flex-launcher /src/usr/local/bin
 
 # Verify if the results are in the correct paths
-RUN echo "/usr/local/share/flex-launcher contents"
-RUN ls /src/usr/local/share/flex-launcher
-RUN echo "/usr/local/bin contents"
-RUN ls /src/usr/local/bin
+RUN echo "/usr/local/share/flex-launcher contents" && \
+  ls /src/usr/local/share/flex-launcher
+RUN echo "/usr/local/bin contents" && \
+  ls /src/usr/local/bin
 
 # Copy only /src to the final image
 FROM scratch AS cache
