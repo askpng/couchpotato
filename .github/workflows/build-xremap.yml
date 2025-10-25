@@ -1,0 +1,32 @@
+name: Build & push xremap layer
+on:
+  schedule:
+    - cron: "10 0 1 * *"
+  push:
+    paths:
+      - "files/xremap/Containerfile"
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+jobs:
+  build-cache:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v5
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build & push flex-launcher layer
+        uses: docker/build-push-action@v6
+        with:
+          context: files/xremap
+          file: files/xremap/Containerfile
+          push: true
+          tags: ghcr.io/askpng/xremap:${{ github.ref_name }}

@@ -1,0 +1,18 @@
+# Use fedora-toolbox:latest
+FROM registry.fedoraproject.org/fedora-toolbox:latest AS builder
+
+WORKDIR /
+
+# install Cargo to build xremap
+RUN dnf install -y --setopt=install_weak_deps=False \
+    cargo
+
+# Clone xremap repo & build
+RUN git clone https://github.com/xremap/xremap && \
+    cargo install --path xremap && \
+    # Ensure we don't get a non-executable binary on copy
+    chmod a+x /root/.cargo/bin/*
+
+# Copy results into cache /usr/bin
+FROM scratch AS cache
+COPY --from=builder /root/.cargo/bin /usr/bin

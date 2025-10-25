@@ -1,34 +1,41 @@
-# Use alpine:latest 
+# Use fedora-toolbox:latest
 FROM registry.fedoraproject.org/fedora-toolbox:latest AS builder
 
 WORKDIR /
 
-# Installs flex-launcher build deps
-
+# Install flex-launcher build deps
 RUN dnf install -y --setopt=install_weak_deps=False \
-  SDL2-devel SDL2_image-devel SDL2_ttf-devel inih-devel automake make cmake g++ git
+    SDL2-devel SDL2_image-devel SDL2_ttf-devel inih-devel automake make cmake g++ git
 
-RUN mkdir -p /src/usr/local && \
-  git clone https://github.com/complexlogic/flex-launcher.git && \
-  mkdir -p flex-launcher/build  
+# Clone flex-launcher repo
+RUN git clone https://github.com/complexlogic/flex-launcher.git && \
+    mkdir -p flex-launcher/build
 
-WORKDIR flex-launcher/build
+# Build flex-launcher
+WORKDIR /flex-launcher/build
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release && \
-  make
+    make
 
 WORKDIR /
 
-# Copy results into /flex-build
+# Copy results into /src
 RUN mkdir -p /src/usr/local/share/flex-launcher && mkdir /src/usr/local/bin \
-  && cp -r /flex-launcher/build/assets /src/usr/local/share/flex-launcher \
-  && cp /flex-launcher/build/config.ini /src/usr/local/share/flex-launcher/config_default.ini \
-  && cp /flex-launcher/build/flex-launcher /src/usr/local/bin
+    && cp -r /flex-launcher/build/assets /src/usr/local/share/flex-launcher \
+    && cp /flex-launcher/build/config.ini /src/usr/local/share/flex-launcher/config_default.ini \
+    && cp /flex-launcher/build/flex-launcher /src/usr/local/bin
+
+# Download icons from Wikimedia
+RUN mkdir -p /src/usr/share/icons/hicolor/scalable/apps && \
+    curl -fSl "https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg" -o /src/usr/share/icons/hicolor/scalable/apps/netflix.svg && \
+    curl -fSl "https://upload.wikimedia.org/wikipedia/commons/7/7c/Amazon_Prime_Video_blue_logo_1.svg" -o /src/usr/share/icons/hicolor/scalable/apps/prime-video.svg && \
+    curl -fSl "https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" -o /src/usr/share/icons/hicolor/scalable/apps/steam.svg && \
+    curl -fSl "https://upload.wikimedia.org/wikipedia/commons/c/c5/YouTube_social_red_squircle_%282024%29.svg" -o /src/usr/share/icons/hicolor/scalable/apps/youtube.svg
 
 # Verify if the results are in the correct paths
 RUN echo "/usr/local/share/flex-launcher contents" && \
-  ls /src/usr/local/share/flex-launcher
+    ls /src/usr/local/share/flex-launcher
 RUN echo "/usr/local/bin contents" && \
-  ls /src/usr/local/bin
+    ls /src/usr/local/bin
 
 # Copy only /src to the final image
 FROM scratch AS cache
