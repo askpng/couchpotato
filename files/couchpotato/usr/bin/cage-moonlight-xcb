@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-export QT_QPA_PLATFORM=xcb
-exec /usr/bin/cage -- /usr/bin/moonlight

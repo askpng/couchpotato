@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# Steam Dock update is not applicable in this environment.
+
+echo "Steam Dock update not available in this environment."
+exit 0;

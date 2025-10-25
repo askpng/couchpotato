@@ -1,0 +1,41 @@
+# --------------------------------------------------------
+# CONFIG START -------------------------------------------
+# Remove \# and edit the values as needed ----------------
+# STAPM_LIMIT=65000
+# FAST_LIMIT=88000
+# SLOW_LIMIT=88000
+# CONFIG END ---------------------------------------------
+# --------------------------------------------------------
+# Ryzen 3200G default values
+# CPU Family: Picasso
+# SMU BIOS Interface Version: 20
+# Version: v0.18.0 
+# PM Table Version: 1e0004
+# |        Name         |   Value   |     Parameter      |
+# |---------------------|-----------|--------------------|
+# | STAPM LIMIT         |    65.000 | stapm-limit        |
+# | STAPM VALUE         |     6.237 |                    |
+# | PPT LIMIT FAST      |    88.000 | fast-limit         |
+# | PPT VALUE FAST      |     6.321 |                    |
+# | PPT LIMIT SLOW      |    88.000 | slow-limit         |
+# | PPT VALUE SLOW      |     6.297 |                    |
+# | StapmTimeConst      |   100.000 | stapm-time         |
+# | SlowPPTTimeConst    |     5.000 | slow-time          |
+# | PPT LIMIT APU       |       nan | apu-slow-limit     |
+# | PPT VALUE APU       |       nan |                    |
+# | TDC LIMIT VDD       |    65.000 | vrm-current        |
+# | TDC VALUE VDD       |     0.960 |                    |
+# | TDC LIMIT SOC       |    50.000 | vrmsoc-current     |
+# | TDC VALUE SOC       |     3.151 |                    |
+# | EDC LIMIT VDD       |    95.000 | vrmmax-current     |
+# | EDC VALUE VDD       |    93.578 |                    |
+# | EDC LIMIT SOC       |    75.000 | vrmsocmax-current  |
+# | EDC VALUE SOC       |    36.205 |                    |
+# | THM LIMIT CORE      |    95.000 | tctl-temp          |
+# | THM VALUE CORE      |    32.596 |                    |
+# | STT LIMIT APU       |       nan | apu-skin-temp      |
+# | STT VALUE APU       |       nan |                    |
+# | STT LIMIT dGPU      |       nan | dgpu-skin-temp     |
+# | STT VALUE dGPU      |       nan |                    |
+# | CCLK Boost SETPOINT |    30.000 | power-saving /     |
+# | CCLK BUSY VALUE     |    10.246 | max-performance    |

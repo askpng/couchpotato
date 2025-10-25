@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+LAUNCHER_SERVICE="flex-launcher.service"
+
+# Use systemd-run so that the script continues even after the launcher dies
+systemd-run --user \
+  --unit=steam-session \
+  --property=KillMode=control-group \
+  --description="Detached Steam via Gamescope" \
+  bash -lc '
+    # Let flex-launcher die. Wait 0.5s
+    sleep 0.5
+
+    # Check if the plugin_loader unit file exists at the specified path & start it
+    if [ -f "/etc/systemd/system/plugin_loader.service" ]; then
+        echo "Starting plugin_loader.service..."
+        systemctl --system start plugin_loader.service
+        sleep 1
+    fi
+
+    # Run Steam Deck-mode Steam via Gamescope with mangoapp
+    /usr/bin/gamescope \
+       -W 1920 -H 1080 -r 60 \
+       --backend sdl \
+       --force-grab-cursor \
+       -e --mangoapp -- \
+       /usr/bin/steam -steamdeck -steamos3
+
+    # Restart the flex-launcher service once Steam exits
+    systemctl --user start '"${LAUNCHER_SERVICE}"'
+
+    # Check if the plugin_loader unit file exists at the specified path & stop it
+    if [ -f "/etc/systemd/system/plugin_loader.service" ]; then
+        echo "Stopping plugin_loader.service..."
+        systemctl --system stop plugin_loader.service
+    fi
+
+  ' >/dev/null 2>&1 &
+
+# Kills flex-launcher service to return to tty1
+systemctl --user stop "${LAUNCHER_SERVICE}"
+
+# Exit so this script's process inside the launcher dies
+exit 0
