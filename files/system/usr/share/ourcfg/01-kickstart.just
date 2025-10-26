@@ -20,3 +20,8 @@ enable-flex-launcher-service:
     echo "Files copied. Edit your launcher files at \$HOME/.config/flex-launcher"
     systemctl --user daemon-reload
     systemctl --user enable flex-launcher.service
+
+copy-skel-files:
+    #/usr/bin/env bash
+    echo "Copying default user files shipped in skel"
+    cp -r /etc/skel $HOME/

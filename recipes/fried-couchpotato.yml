@@ -124,30 +124,10 @@ modules:
       - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/swingmx/swingmusic/releases/latest)) && curl -fLs https://github.com/swingmx/swingmusic/releases/download/${VER}/swingmusic_linux_amd64 -o /tmp/swingmusic"
       - cp /tmp/swingmusic /usr/bin/swingmusic && chmod 0755 /usr/bin/swingmusic
       - rm /tmp/swingmusic
-      # Icons
-      ## Chromium
-      - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/2/28/Chromium_Logo.svg" -o /tmp/chromium.svg
-      - cp /tmp/chromium.svg /usr/share/icons/hicolor/scalable/apps/chromium.svg && rm /tmp/chromium.svg
-      ## Netflix
-      - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg" -o /tmp/netflix.svg
-      - cp /tmp/netflix.svg /usr/share/icons/hicolor/scalable/apps/netflix.svg && rm /tmp/netflix.svg
-      - curl -L "https://upload.wikimedia.org/wikipedia/commons/0/03/Netflix-icon.png" -o /tmp/netflix.png
-      - cp /tmp/netflix.png /usr/share/icons/hicolor/512x512/apps/netflix.png
-      ## Prime Video
-      - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/7/7c/Amazon_Prime_Video_blue_logo_1.svg" -o /tmp/prime-video.svg
-      - cp /tmp/prime-video.svg /usr/share/icons/hicolor/scalable/apps/prime-video.svg && rm /tmp/prime-video.svg
-      ## Steam
-      - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" -o /tmp/steam.svg
-      - cp /tmp/steam.svg /usr/share/icons/hicolor/scalable/apps/steam.svg && rm /tmp/steam.svg
-      ## YouTube
-      - curl -fSl "https://upload.wikimedia.org/wikipedia/commons/c/c5/YouTube_social_red_squircle_%282024%29.svg" -o /tmp/youtube.svg
-      - cp /tmp/youtube.svg /usr/share/icons/hicolor/scalable/apps/youtube.svg && rm /tmp/youtube.svg
 
   - type: files
     files:
       - source: system
-        destination: /
-      - source: couchpotato
         destination: /
       - source: fried-couchpotato
         destination: /        
