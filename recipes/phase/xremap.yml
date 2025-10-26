@@ -5,5 +5,5 @@ modules:
     dest: /
   - type: script
     snippets:
-      - mkdir -p /etc/xremap
-      - curl -L "https://raw.githubusercontent.com/xremap/xremap/refs/heads/master/example/config.yml" -o /etc/skel/.config/config_example.yml
+      - mkdir -p /etc/skel/.config/xremap
+      - curl -L "https://raw.githubusercontent.com/xremap/xremap/refs/heads/master/example/config.yml" -o /etc/skel/.config/xremap/config_example.yml
