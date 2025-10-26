@@ -1,15 +1,10 @@
 [Unit]
 Description=flex-launcher service
-# Ensures this starts after the basic user session is set up
 After=graphical-session.target
-# Determines restart tries upon exit code 1
-# StartLimitIntervalSec=10s
-# StartLimitBurst=3
 
 [Service]
-ExecStart=/usr/bin/gamescope -W 1920 -H 1080 --backend sdl --force-grab-cursor -- /usr/local/bin/flex-launcher
-# Automatically restart the service upon exit
-# Restart=always
+ExecStart=/usr/bin/weston -c /etc/xdg/weston/weston-flex.ini
+# Restart=on-failure
 # RestartSec=1
 
 [Install]
