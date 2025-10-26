@@ -12,6 +12,8 @@ modules:
 
   - from-file: phase/flex-launcher.yml
 
+  - from-file: phase/xremap.yml
+
   - type: dnf
     repos:
       cleanup: true

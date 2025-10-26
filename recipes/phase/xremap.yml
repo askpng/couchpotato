@@ -1,0 +1,9 @@
+modules:
+  - type: copy
+    from: ghcr.io/askpng/xremap:main
+    src: /
+    dest: /
+  - type: script
+    snippets:
+      - mkdir -p /etc/xremap
+      - curl -L "https://raw.githubusercontent.com/xremap/xremap/refs/heads/master/example/config.yml" -o /etc/xremap/config_example.yml
