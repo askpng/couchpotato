@@ -6,4 +6,4 @@ modules:
   - type: script
     snippets:
       - mkdir -p /etc/xremap
-      - curl -L "https://raw.githubusercontent.com/xremap/xremap/refs/heads/master/example/config.yml" -o /etc/xremap/config_example.yml
+      - curl -L "https://raw.githubusercontent.com/xremap/xremap/refs/heads/master/example/config.yml" -o /etc/skel/.config/config_example.yml

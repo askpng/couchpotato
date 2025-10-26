@@ -1,0 +1,23 @@
+[Unit]
+Description=Xremap
+After=default.target
+
+[Service]
+EnvironmentFile=-%h/.config/default/xremap
+ExecStart=sh -c " \
+    /usr/bin/xremap \
+    ${CONFIG_PATH} \
+    --watch=${WATCH} \
+    --ignore=${IGNORE} \
+    --device=${DEVICE} \
+    # Remove hashtags if you want to use any of the following options
+    # --output-device-name=${OUTPUT} \
+    # --vendor=${VENDOR} \
+    # --product=${PRODUCT} \
+    "
+Restart=on-failure
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

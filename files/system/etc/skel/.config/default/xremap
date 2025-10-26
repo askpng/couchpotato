@@ -1,0 +1,27 @@
+# For further information, refer to xremap GitHub
+# https://github.com/xremap/xremap
+
+# Define xremap configuration file
+CONFIG_PATH=$HOME/.config/xremap/xremap.yml
+
+# Define whether to watch device or config changes
+WATCH={device,config}
+# or "device", or "config" without the bracket
+
+# Define if xremap should ignore certain devices
+# Run evtest to identify devices
+IGNORE=/dev/input/event{0..3}
+# or 0, or 1,2,3, etc
+
+# Define devices xremap should watch
+DEVICE=/dev/input/event{4..30}
+# or 4, or 5,6,7, etc.
+
+# --output, --vendor, and --product options are commented out in the service file
+# To use them, run "systemctl --user edit xremap.service" and remove hashtags on the relevant entry
+
+OUTPUT=
+
+VENDOR=
+
+PRODUCT=
