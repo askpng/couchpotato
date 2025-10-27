@@ -87,8 +87,7 @@ modules:
         - google-noto-sans-mono-cjk-vf-fonts   
         ## Gamescope     
         - gamescope-libs
-        - gamescope-shaders         
-        - extest.i686   
+        - gamescope-shaders
         - libeis
         - libXres
         - luajit
@@ -124,6 +123,11 @@ modules:
       - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/pythops/bluetui/releases/latest)) && curl -fLs https://github.com/pythops/bluetui/releases/download/${VER}/bluetui-x86_64-linux-gnu  -o /tmp/bluetui"
       - cp /tmp/bluetui /usr/bin/bluetui && chmod 0755 /usr/bin/bluetui
       - rm /tmp/bluetui
+      ## extest (library, actually)
+      - mkdir -p /usr/lib/extest
+      - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/bazzite-org/extest/releases/latest)) && curl -fLs https://github.com/bazzite-org/extest/releases/download/${VER}/libextest.so -o /tmp/libextest.so"
+      - cp /tmp/libextest.so /usr/lib/extest/libextest.so
+      - rm /tmp/libextest.so      
       ## just
       - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/casey/just/releases/latest)) && curl -fLs --create-dirs https://github.com/casey/just/releases/download/${VER}/just-${VER}-x86_64-unknown-linux-musl.tar.gz -o /tmp/just-x86_64-unknown-linux-musl.tar.gz"
       - "mkdir -p /tmp/just && tar -xzf /tmp/just-x86_64-unknown-linux-musl.tar.gz -C /tmp/just/"
