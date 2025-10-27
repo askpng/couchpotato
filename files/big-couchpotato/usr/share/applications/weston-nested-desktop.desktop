@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Weston Nested Desktop
+Comment=Launch Weston desktop view from Steam
+Exec=/usr/bin/weston --fullscreen
+Type=Application
