@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/usr/bin/just --justfile /usr/share/ourcfg/00-master-justfile "${@}"

@@ -1,0 +1,16 @@
+modules:
+  - type: copy
+    from: ghcr.io/askpng/flex-launcher:main
+    src: /
+    dest: /
+  - type: dnf
+    install:
+      install-weak-deps: false
+      skip-unavailable: false
+      skip-broken: false
+      allow-erasing: false
+      packages:
+        ## flex-launcher
+        - SDL2
+        - SDL2_image
+        - SDL2_ttf

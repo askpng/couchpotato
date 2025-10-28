@@ -3,4 +3,4 @@ cosign.private
 /Containerfile
 .bluebuild-*
 tmp.*
-*.tmp
+*.tmp/.bluebuild-scripts_*
