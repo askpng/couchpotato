@@ -1,24 +1,25 @@
 modules:
   - type: copy
-    from: ghcr.io/ublue-os/akmods:bazzite-42-x86_64
-    src: /kernel-rpms
-    dest: /tmp/kernel-rpms
-
-  - type: copy
     from: ghcr.io/ublue-os/akmods-extra:bazzite-42-x86_64
     src: /rpms
     dest: /tmp/akmods-extra-rpms
 
+  - type: copy
+    from: ghcr.io/ublue-os/akmods-extra:bazzite-42-x86_64
+    src: /kernel-rpms
+    dest: /tmp/kernel-rpms
+
   - type: script
     snippets:
       # Remove default kernel & remove leftover modules
-      - dnf -y remove kernel-* && rm -drf /usr/lib/modules/*
+      - dnf -y remove kernel-* kernel && rm -drf /usr/lib/modules/*
       # Add ublue-os COPR repo
       - curl -L https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/repo/fedora-$(rpm -E %fedora)/ublue-os-akmods-fedora-$(rpm -E %fedora).repo -o /etc/yum.repos.d/_copr_ublue-os-akmods.repo
       # Install Bazzite kernel, as we need it for kmods compatibility
-      - dnf -y install --setopt=install_weak_deps=False /tmp/kernel-rpms/kernel-*.rpm
-      # Install ryzen_smu & zenergy kmods
-      - dnf -y install --setopt=install_weak_deps=False /tmp/akmods-extra-rpms/kmods/*ryzen-smu*.rpm
-      - dnf -y install --setopt=install_weak_deps=False /tmp/akmods-extra-rpms/kmods/*zenergy*.rpm
+      # Immediately install ryzen_smu and zenergy
+      - dnf -y install --setopt=install_weak_deps=False
+          /tmp/kernel-rpms/kernel-*.rpm
+          /tmp/akmods-extra-rpms/kmods/*ryzen-smu*.rpm
+          /tmp/akmods-extra-rpms/kmods/*zenergy*.rpm
       # Remove ublue-os COPR repo
       - rm /etc/yum.repos.d/_copr_ublue-os-akmods.repo
