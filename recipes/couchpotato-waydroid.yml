@@ -46,6 +46,7 @@ modules:
         # HTPC Packages
         ## Essentials
         - bindfs
+        - cage
         - cpuinfo
         - fish
         - flatpak
