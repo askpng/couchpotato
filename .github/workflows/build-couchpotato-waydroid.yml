@@ -1,11 +1,11 @@
-name: Build big-couchpotato
+name: Build couchpotato-waydroid
 on:
   schedule:
-    - cron: "0 4 1,15 * *"
+    - cron: "20 4 1,15 * *"
     
   push: # build on push
     paths: # build on push of the following files
-      - "recipes/big-couchpotato.yml" # solarizzed recipe
+      - "recipes/couchpotato-waydroid.yml" # solarizzed recipe
       - ".github/workflows/build-couchpotato-waydroid.yml"
       
   pull_request: # allow PRs triggering builds
