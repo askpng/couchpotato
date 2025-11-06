@@ -1,0 +1,162 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
+
+name: couchpotato-waydroid
+description: AndroidTV image
+
+base-image: quay.io/fedora/fedora-bootc
+image-version: 42
+
+modules:
+  - from-file: phase/kernel-and-akmods.yml
+
+  - from-file: phase/xremap.yml
+
+  - type: dnf
+    repos:
+      cleanup: true
+      copr:
+        - bazzite-org/bazzite               
+      nonfree: rpmfusion 
+    install:
+      install-weak-deps: false
+      allow-erasing: true
+      packages:
+        # Graphics
+        - ffmpeg
+        - gstreamer1-plugin-dav1d
+        - gstreamer1-plugin-libav
+        - gstreamer1-plugins-base
+        - gstreamer1-plugins-good
+        - gstreamer1-plugins-good-qt
+        - gstreamer1-plugins-bad-freeworld
+        - gstreamer1-plugins-ugly
+        - gstreamer1-vaapi
+        - intel-media-driver
+        - libavcodec-freeworld
+        - libva
+        - mesa-va-drivers-freeworld
+        - mesa-vulkan-drivers
+        - pipewire-plugin-vulkan
+        - vulkan-loader
+        - vulkan-headers
+        - vulkan-tools
+        - xdg-user-dirs        
+        - xdg-utils    
+        # HTPC Packages
+        ## Essentials
+        - bindfs
+        - cpuinfo
+        - fish
+        - flatpak
+        - fzf
+        - git
+        - grim
+        - lm_sensors
+        - lsb_release
+        - pciutils
+        - repo: copr:copr.fedorainfracloud.org:bazzite-org:bazzite
+          packages:
+          - ryzenadj        
+        - seatd
+        #  - steam
+        - s-tui
+        - stress-ng
+        - tuned
+        - upower
+        - usbutils
+        - waydroid
+        - weston
+        ## Audio & Video
+        - pipewire
+        - pipewire-utils
+        - pipewire-pulseaudio
+        - pipewire-alsa
+        - pulseaudio-utils
+        - libva-utils
+        - wireplumber
+        ## Bluetooth & Controllers
+        - blueman
+        - evtest
+        - python3-evdev        
+        - steam-devices
+        ## CJK fonts
+        - google-noto-serif-cjk-vf-fonts
+        - google-noto-sans-mono-cjk-vf-fonts   
+        ## Gamescope     
+        # - gamescope-libs
+        # - gamescope-shaders
+        # - libeis
+        # - libXres
+        # - luajit
+        # - mangohud
+        # - repo: copr:copr.fedorainfracloud.org:bazzite-org:bazzite-multilib
+        #   packages:        
+        #   - gamescope.x86_64       
+        ## Internet & Management
+        - cockpit
+        - firewall-config
+        - syncthing
+
+  - type: script
+    snippets:
+      # Wallpaper
+      - curl -fLs "https://github.com/fedoradesign/backgrounds/blob/57a8b2c6fdd425850a2809232d575301977e9e53/extras/01-dark-blue.png" -o /tmp/blue-wallpaper.png
+      - cp /tmp/blue-wallpaper.png /usr/share/weston/blue-wallpaper.png
+      - rm /tmp/blue-wallpaper.png
+      # SteamOS files
+      # - git clone https://github.com/shahnawazshahin/steam-using-gamescope-guide.git /tmp/gamescope-files
+      ## only copy /usr/bin files, we do not need /usr/share files
+      # - cp -r /tmp/gamescope-files/usr/bin /usr
+      # - rm -r /tmp/gamescope-files
+      # Binaries
+      ## bluetui
+      - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/pythops/bluetui/releases/latest)) && curl -fLs https://github.com/pythops/bluetui/releases/download/${VER}/bluetui-x86_64-linux-gnu  -o /tmp/bluetui"
+      - cp /tmp/bluetui /usr/bin/bluetui && chmod 0755 /usr/bin/bluetui
+      - rm /tmp/bluetui
+      ## extest (library, actually)
+      - mkdir -p /usr/lib/extest
+      - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/bazzite-org/extest/releases/latest)) && curl -fLs https://github.com/bazzite-org/extest/releases/download/${VER}/libextest.so -o /tmp/libextest.so"
+      - cp /tmp/libextest.so /usr/lib/extest/libextest.so
+      - rm /tmp/libextest.so      
+      ## just
+      - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/casey/just/releases/latest)) && curl -fLs --create-dirs https://github.com/casey/just/releases/download/${VER}/just-${VER}-x86_64-unknown-linux-musl.tar.gz -o /tmp/just-x86_64-unknown-linux-musl.tar.gz"
+      - "mkdir -p /tmp/just && tar -xzf /tmp/just-x86_64-unknown-linux-musl.tar.gz -C /tmp/just/"
+      - cp /tmp/just/just /usr/bin/just && chmod 0755 /usr/bin/just
+      - cp /tmp/just/completions/just.bash /usr/share/bash-completion/completions/just
+      - cp /tmp/just/completions/just.fish /usr/share/fish/completions/just.fish
+      - rm /tmp/just-x86_64-unknown-linux-musl.tar.gz
+      - rm -r /tmp/just/
+
+  # - type: default-flatpaks
+  #   configurations:
+  #   - notify: true
+  #     scope: system
+  #     install:
+  #       - com.moonlight_stream.Moonlight
+  #       - com.github.tchx84.Flatseal
+  #       - org.chromium.Chromium
+
+  - type: files
+    files:
+      - source: system
+        destination: /
+      - source: big-couchpotato/etc
+        destination: /etc
+
+  - type: systemd
+    user:
+      enabled:
+        - pipewire.service
+        - pipewire-pulse.service
+        - wireplumber.service
+    system:
+      # disabled:
+        # - getty@$tty1.service # TODO, or README
+      enabled:
+        # Automatically logs in to the default user account
+        # - autologin@$(whoami).service # TODO, or README
+        - cockpit.socket
+        - seatd.service
+  
+  - type: signing
