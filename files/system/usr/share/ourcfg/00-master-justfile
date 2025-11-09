@@ -2,5 +2,6 @@ set allow-duplicate-recipes := true
 set ignore-comments := true
 
 import "/usr/share/ourcfg/01-kickstart.just"
+import? "/usr/share/ourcfg/99-atv.just"
 import? "/usr/share/ourcfg/99-waydroid.just"
 import? "/usr/share/ourcfg/99-custom.just"

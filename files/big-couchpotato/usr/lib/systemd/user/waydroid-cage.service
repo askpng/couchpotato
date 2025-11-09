@@ -1,0 +1,12 @@
+[Unit]
+Description=Waydroid in Cage
+# StopWhenUnneeded=yes
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/cage waydroid show-full-ui
+Restart=on-failure
+# RestartSec=5
+
+[Install]
+WantedBy=default.target

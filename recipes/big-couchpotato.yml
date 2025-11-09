@@ -49,6 +49,8 @@ modules:
         - xdg-utils    
         # HTPC Packages
         ## Essentials
+        - bindfs
+        - cage
         - cpuinfo
         - fish
         - flatpak
@@ -68,6 +70,7 @@ modules:
         - tuned
         - upower
         - usbutils
+        - waydroid
         - weston
         ## Audio & Video
         - pipewire
