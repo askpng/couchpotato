@@ -4,3 +4,17 @@ cosign.private
 .bluebuild-*
 tmp.*
 *.tmp/.bluebuild-scripts_*
+config.toml# Generate config.toml file for bootc-image-builder
+config:
+    if [[ ! -e ./config.toml ]]; then
+        echo "Generating config.toml..."
+        cat <<EOF >> ./config.toml
+    [[customizations.user]]
+    name = "{{ USRN }}"
+    password = "{{ PSWD }}"
+    groups = ["wheel"]
+    EOF
+    echo "config.toml generated."
+    else
+        echo "config.toml already exists."
+    fi
