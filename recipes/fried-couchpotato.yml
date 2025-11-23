@@ -5,7 +5,7 @@ name: fried-couchpotato
 description: Light image with entertainment and game streaming capabilities.
 
 base-image: quay.io/fedora/fedora-bootc
-image-version: 42
+image-version: 43
 
 modules:
   - from-file: phase/kernel-and-akmods.yml

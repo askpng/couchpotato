@@ -5,7 +5,7 @@ name: big-couchpotato
 description: Light image with entertainment, game streaming, and local gaming capabilities.
 
 base-image: quay.io/fedora/fedora-bootc
-image-version: 42
+image-version: 43
 
 modules:
   - from-file: phase/kernel-and-akmods.yml
@@ -19,7 +19,7 @@ modules:
       cleanup: true
       copr:
         - bazzite-org/bazzite-multilib
-        - bazzite-org/bazzite               
+        # - bazzite-org/bazzite               
         - ferdiu/moonlight
       nonfree: rpmfusion 
     install:
@@ -58,9 +58,9 @@ modules:
         - lm_sensors
         - lsb_release
         - pciutils
-        - repo: copr:copr.fedorainfracloud.org:bazzite-org:bazzite
-          packages:
-          - ryzenadj        
+        # - repo: copr:copr.fedorainfracloud.org:bazzite-org:bazzite
+        #   packages:
+        #   - ryzenadj        
         - seatd
         - steam
         - s-tui
@@ -86,15 +86,13 @@ modules:
         - google-noto-serif-cjk-vf-fonts
         - google-noto-sans-mono-cjk-vf-fonts   
         ## Gamescope     
-        - gamescope-libs
-        - gamescope-shaders
         - libeis
         - libXres
         - luajit
         - mangohud
-        - repo: copr:copr.fedorainfracloud.org:bazzite-org:bazzite-multilib
-          packages:        
-          - gamescope.x86_64       
+        # - repo: copr:copr.fedorainfracloud.org:bazzite-org:bazzite-multilib
+        #   packages:        
+        #   - gamescope.x86_64       
         ## Internet & Management
         - cockpit
         - firewall-config
@@ -109,6 +107,19 @@ modules:
 
   - type: script
     snippets:
+      # Gamescope
+      # Gamescope
+      - dnf -y install dnf5-plugins
+      - dnf -y copr enable bazzite-org/bazzite
+      - dnf -y copr enable bazzite-org/bazzite-multilib
+      - dnf -y config-manager setopt "*bazzite*".priority=90 
+      - dnf -y install
+          gamescope
+          gamescope-libs
+          gamescope-shaders
+          ryzenadj
+      - dnf -y copr disable bazzite-org/bazzite-multilib
+      - dnf -y copr disable bazzite-org/bazzite      
       # Wallpaper
       - curl -fLs "https://github.com/fedoradesign/backgrounds/blob/57a8b2c6fdd425850a2809232d575301977e9e53/extras/01-dark-blue.png" -o /tmp/blue-wallpaper.png
       - cp /tmp/blue-wallpaper.png /usr/share/weston/blue-wallpaper.png
