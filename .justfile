@@ -1,4 +1,3 @@
-# List recipes
 @default:
     just --list
 
@@ -10,7 +9,12 @@ PSWD := "bootc"
 
 # Build image-name as named in ./recipes/images
 build *ARGS:
-    bluebuild build --skip-validation -s -c zstd "{{ RCPDIR }}"/"{{ ARGS }}".yml
+    #!/usr/bin/env bash
+    if [[ -e Containerfile."{{ ARGS }}" ]]; then
+        rm Containerfile."{{ ARGS }}"
+    fi
+    bluebuild generate -o Containerfile."{{ ARGS }}" "{{ RCPDIR }}"/"{{ ARGS }}".yml
+    podman build -t "{{ ARGS }}":"{{ VERSION }}" --file Containerfile."{{ ARGS }}" --squash
 
 # Build, create, and purge archive of image-name as named in ./recipes/images. Useful for testing recipes
 targz *ARGS:
@@ -31,19 +35,20 @@ qcow2 *ARGS: config
         --rootfs btrfs \
         --use-librepo=True \
         --chown 1000:1000 \
-        "{{ ARGS }}":"{{ VERSION }}"
+        localhost/"{{ ARGS }}":"{{ VERSION }}"
     sudo rm ./manifest*
     sudo rm -rf ./.bluebuild*
     rm Containerfile."{{ ARGS }}"
 
 # Completely clean user & system-level Podman image registry & ./
 scrub:
-    podman rmi -f $(podman images -f "dangling=true" -q)
-    sudo podman rmi -f $(sudo podman images -f "dangling=true" -q)
     rm -rf ./qcow2 ./.bluebuild-scripts_* 
     rm -f ./tmp.tar.gz ./config.toml
+    rm ./Containerfile*
+    podman rmi -f $(podman images -f "dangling=true" -q)
+    sudo podman rmi -f $(sudo podman images -f "dangling=true" -q)
 
-# Generate config.toml file for bootc-image-builder
+# Generate bootc-image-builder config
 config:
     #!/usr/bin/env bash
     if [[ ! -e ./config.toml ]]; then

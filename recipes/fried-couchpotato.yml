@@ -5,13 +5,11 @@ name: fried-couchpotato
 description: Light image with entertainment and game streaming capabilities.
 
 base-image: quay.io/fedora/fedora-bootc
-image-version: 42
+image-version: 43
 
 modules:
   - from-file: phase/kernel-and-akmods.yml
-
   - from-file: phase/flex-launcher.yml
-
   - from-file: phase/xremap.yml
 
   - type: dnf
@@ -124,6 +122,7 @@ modules:
       - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/swingmx/swingmusic/releases/latest)) && curl -fLs https://github.com/swingmx/swingmusic/releases/download/${VER}/swingmusic_linux_amd64 -o /tmp/swingmusic"
       - cp /tmp/swingmusic /usr/bin/swingmusic && chmod 0755 /usr/bin/swingmusic
       - rm /tmp/swingmusic
+      - dnf clean all      
 
   - type: files
     files:
@@ -145,6 +144,7 @@ modules:
         # Automatically logs in to the default user account
         # - autologin@$(whoami).service # TODO, or README
         - cockpit.socket
+        - rechunker-group-fix.service        
         - seatd.service
 
   - type: signing
