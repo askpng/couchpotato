@@ -48,7 +48,7 @@ jobs:
     
       # the build is fully handled by the reusable github action
       - name: Build big-couchpotato
-        uses: blue-build/github-action@v1.9
+        uses: blue-build/github-action@v1.10
         with:
           recipe: ${{ matrix.recipe }}
           rechunk: false
