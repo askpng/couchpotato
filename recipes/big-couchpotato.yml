@@ -9,17 +9,13 @@ image-version: 43
 
 modules:
   - from-file: phase/kernel-and-akmods.yml
-
   - from-file: phase/flex-launcher.yml
-
   - from-file: phase/xremap.yml
 
   - type: dnf
     repos:
       cleanup: true
       copr:
-        - bazzite-org/bazzite-multilib
-        # - bazzite-org/bazzite               
         - ferdiu/moonlight
       nonfree: rpmfusion 
     install:
@@ -49,6 +45,7 @@ modules:
         - xdg-utils    
         # HTPC Packages
         ## Essentials
+        - cage
         - cpuinfo
         - fish
         - flatpak
@@ -57,10 +54,7 @@ modules:
         - grim
         - lm_sensors
         - lsb_release
-        - pciutils
-        # - repo: copr:copr.fedorainfracloud.org:bazzite-org:bazzite
-        #   packages:
-        #   - ryzenadj        
+        - pciutils      
         - seatd
         - steam
         - s-tui
@@ -89,10 +83,7 @@ modules:
         - libeis
         - libXres
         - luajit
-        - mangohud
-        # - repo: copr:copr.fedorainfracloud.org:bazzite-org:bazzite-multilib
-        #   packages:        
-        #   - gamescope.x86_64       
+        - mangohud  
         ## Internet & Management
         - cockpit
         - firewall-config
@@ -107,8 +98,7 @@ modules:
 
   - type: script
     snippets:
-      # Gamescope
-      # Gamescope
+       # Gamescope
       - dnf -y install dnf5-plugins
       - dnf -y copr enable bazzite-org/bazzite
       - dnf -y copr enable bazzite-org/bazzite-multilib
@@ -147,6 +137,7 @@ modules:
       - cp /tmp/just/completions/just.fish /usr/share/fish/completions/just.fish
       - rm /tmp/just-x86_64-unknown-linux-musl.tar.gz
       - rm -r /tmp/just/
+      - dnf clean all
 
   - type: default-flatpaks
     configurations:
@@ -177,6 +168,7 @@ modules:
         # Automatically logs in to the default user account
         # - autologin@$(whoami).service # TODO, or README
         - cockpit.socket
+        - rechunker-group-fix.service
         - seatd.service
   
   - type: signing
