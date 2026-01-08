@@ -100,16 +100,16 @@ modules:
     snippets:
        # Gamescope
       - dnf -y install dnf5-plugins
-      - dnf -y copr enable bazzite-org/bazzite
-      - dnf -y copr enable bazzite-org/bazzite-multilib
+      - dnf -y copr enable ublue-os/bazzite
+      - dnf -y copr enable ublue-os/bazzite-multilib
       - dnf -y config-manager setopt "*bazzite*".priority=90 
       - dnf -y install
           gamescope
           gamescope-libs
           gamescope-shaders
           ryzenadj
-      - dnf -y copr disable bazzite-org/bazzite-multilib
-      - dnf -y copr disable bazzite-org/bazzite      
+      - dnf -y copr disable ublue-os/bazzite-multilib
+      - dnf -y copr disable ublue-os/bazzite      
       # Wallpaper
       - curl -fLs "https://github.com/fedoradesign/backgrounds/blob/57a8b2c6fdd425850a2809232d575301977e9e53/extras/01-dark-blue.png" -o /tmp/blue-wallpaper.png
       - cp /tmp/blue-wallpaper.png /usr/share/weston/blue-wallpaper.png
@@ -126,7 +126,7 @@ modules:
       - rm /tmp/bluetui
       ## extest (library, actually)
       - mkdir -p /usr/lib/extest
-      - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/bazzite-org/extest/releases/latest)) && curl -fLs https://github.com/bazzite-org/extest/releases/download/${VER}/libextest.so -o /tmp/libextest.so"
+      - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/ublue-os/extest/releases/latest)) && curl -fLs https://github.com/ublue-os/extest/releases/download/${VER}/libextest.so -o /tmp/libextest.so"
       - cp /tmp/libextest.so /usr/lib/extest/libextest.so
       - rm /tmp/libextest.so      
       ## just

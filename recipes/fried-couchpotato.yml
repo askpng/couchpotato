@@ -17,7 +17,7 @@ modules:
       cleanup: true
       copr:
         - abn/throttled
-        - bazzite-org/bazzite
+        - ublue-os/bazzite
         - ferdiu/moonlight
       nonfree: rpmfusion
     install:
@@ -56,7 +56,7 @@ modules:
         - lsb_release
         - moonlight-qt
         - pciutils
-        - repo: copr:copr.fedorainfracloud.org:bazzite-org:bazzite
+        - repo: copr:copr.fedorainfracloud.org:ublue-os:bazzite
           packages:
           - ryzenadj
         - seatd
