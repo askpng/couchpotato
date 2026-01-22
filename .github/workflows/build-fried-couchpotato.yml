@@ -38,7 +38,7 @@ jobs:
     
       # the build is fully handled by the reusable github action
       - name: Build fried-couchpotato
-        uses: blue-build/github-action@v1.10
+        uses: blue-build/github-action@v1.11
         with:
           recipe: ${{ matrix.recipe }}
           build_chunked_oci: true
