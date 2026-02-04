@@ -98,6 +98,8 @@ modules:
         - xwayland-run
 
   - type: script
+    scripts:
+      - binaries.sh  
     snippets:
       # AppImages
       ## VacuumTube
@@ -105,23 +107,6 @@ modules:
       - cp /tmp/vacuumtube.AppImage /usr/bin/vacuumtube.AppImage && chmod 0755 /usr/bin/vacuumtube.AppImage
       - ln -s /usr/bin/vacuumtube.AppImage /usr/bin/vacuumtube
       - rm /tmp/vacuumtube.AppImage
-      # Binaries
-      ## bluetui
-      - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/pythops/bluetui/releases/latest)) && curl -fLs https://github.com/pythops/bluetui/releases/download/${VER}/bluetui-x86_64-linux-gnu  -o /tmp/bluetui"
-      - cp /tmp/bluetui /usr/bin/bluetui && chmod 0755 /usr/bin/bluetui
-      - rm /tmp/bluetui
-      ## just
-      - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/casey/just/releases/latest)) && curl -fLs --create-dirs https://github.com/casey/just/releases/download/${VER}/just-${VER}-x86_64-unknown-linux-musl.tar.gz -o /tmp/just-x86_64-unknown-linux-musl.tar.gz"
-      - "mkdir -p /tmp/just && tar -xzf /tmp/just-x86_64-unknown-linux-musl.tar.gz -C /tmp/just/"
-      - cp /tmp/just/just /usr/bin/just && chmod 0755 /usr/bin/just
-      - cp /tmp/just/completions/just.bash /usr/share/bash-completion/completions/just
-      - cp /tmp/just/completions/just.fish /usr/share/fish/completions/just.fish
-      - rm /tmp/just-x86_64-unknown-linux-musl.tar.gz
-      - rm -r /tmp/just/
-      ## Swing Music
-      # - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/swingmx/swingmusic/releases/latest)) && curl -fLs https://github.com/swingmx/swingmusic/releases/download/${VER}/swingmusic_linux_amd64 -o /tmp/swingmusic"
-      # - cp /tmp/swingmusic /usr/bin/swingmusic && chmod 0755 /usr/bin/swingmusic
-      # - rm /tmp/swingmusic
       - dnf clean all      
 
   - type: files
