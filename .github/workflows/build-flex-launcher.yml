@@ -24,7 +24,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build & push flex-launcher layer
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: files/flex-launcher
           file: files/flex-launcher/Containerfile
