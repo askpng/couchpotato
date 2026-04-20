@@ -1,8 +1,8 @@
 modules:
   - type: dnf
     repos:
-      copr:
-        - ublue-os/akmods
+      files:
+        - https://raw.githubusercontent.com/terrapkg/subatomic-repos/main/terra.repo
       cleanup: true
     install:
       install-weak-deps: false
