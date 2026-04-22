@@ -19,6 +19,8 @@ modules:
         - abn/throttled
         - ublue-os/bazzite
         - ferdiu/moonlight
+      files:
+        - https://pkgs.tailscale.com/stable/fedora/tailscale.repo
       nonfree: rpmfusion
     install:
       install-weak-deps: false
@@ -62,6 +64,7 @@ modules:
         - seatd
         - s-tui
         - stress-ng
+        - tailscale
         - tuned
         - upower
         - usbutils
@@ -146,5 +149,6 @@ modules:
         - cockpit.socket
         - rechunker-group-fix.service        
         - seatd.service
+        - tailscaled.service
 
   - type: signing

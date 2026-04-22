@@ -19,6 +19,7 @@ modules:
         - bazzite-org/bazzite
         - bazzite-org/bazzite-multilib
       files:
+        - https://pkgs.tailscale.com/stable/fedora/tailscale.repo
         - https://raw.githubusercontent.com/terrapkg/subatomic-repos/main/terra.repo
       nonfree: rpmfusion 
     install:
@@ -63,6 +64,7 @@ modules:
         - steam
         - s-tui
         - stress-ng
+        - tailscale
         - tuned
         - upower
         - usbutils
@@ -162,6 +164,7 @@ modules:
         # - autologin@$(whoami).service # TODO, or README
         - cockpit.socket
         - rechunker-group-fix.service
+        - tailscaled.service
         - seatd.service
   
   - type: signing
