@@ -59,6 +59,7 @@ modules:
         - lm_sensors
         - lsb_release
         - pciutils
+        - podman-compose
         - ryzenadj
         - seatd
         - steam

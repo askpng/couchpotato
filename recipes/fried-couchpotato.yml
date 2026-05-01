@@ -60,6 +60,7 @@ modules:
         - lm_sensors
         - lsb_release
         - pciutils
+        - podman-compose
         - powertop
         - ryzenadj
         - seatd
