@@ -51,6 +51,7 @@ modules:
         - xdg-utils
         # HTPC Packages
         ## Essentials
+        - btop
         - cage
         - cpuinfo
         - fish
@@ -60,6 +61,7 @@ modules:
         - lm_sensors
         - lsb_release
         - pciutils
+        - podlet
         - podman-compose
         - powertop
         - ryzenadj
