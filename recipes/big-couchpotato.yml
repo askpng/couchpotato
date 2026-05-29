@@ -61,7 +61,6 @@ modules:
         - lsb_release
         - pciutils
         - podlet
-        - podman-compose
         - ryzenadj
         - seatd
         - steam
@@ -69,6 +68,7 @@ modules:
         - stress-ng
         - tailscale
         - tuned
+        - unrar
         - upower
         - usbutils
         - weston

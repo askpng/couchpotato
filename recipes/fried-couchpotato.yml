@@ -62,7 +62,6 @@ modules:
         - lsb_release
         - pciutils
         - podlet
-        - podman-compose
         - powertop
         - ryzenadj
         - seatd
@@ -70,6 +69,7 @@ modules:
         - stress-ng
         - tailscale
         - tuned
+        - unrar
         - upower
         - usbutils
         ## Audio & Video
