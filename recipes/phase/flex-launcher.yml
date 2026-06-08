@@ -1,6 +1,6 @@
 modules:
   - type: copy
-    from: ghcr.io/askpng/flex-launcher:main
+    from: ghcr.io/askpng/flex-launcher:latest
     src: /
     dest: /
   - type: dnf
