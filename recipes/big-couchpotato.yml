@@ -5,10 +5,10 @@ name: big-couchpotato
 description: Light image with entertainment, game streaming, and local gaming capabilities.
 
 base-image: quay.io/fedora/fedora-bootc
-image-version: 43
+image-version: latest
 
 modules:
-  - from-file: phase/kernel-and-akmods.yml
+  # - from-file: phase/kernel-and-akmods.yml
   - from-file: phase/flex-launcher.yml
   - from-file: phase/xremap.yml
 
@@ -36,9 +36,10 @@ modules:
         - gstreamer1-plugins-bad-freeworld
         - gstreamer1-plugins-ugly
         - gstreamer1-vaapi
-        - intel-media-driver
         - libavcodec-freeworld
         - libva
+        - libva-intel-driver
+        - intel-media-driver        
         - mesa-va-drivers-freeworld
         - mesa-vulkan-drivers
         - pipewire-plugin-vulkan
@@ -63,6 +64,7 @@ modules:
         - podlet
         - ryzenadj
         - seatd
+        - smartmontools
         - steam
         - s-tui
         - stress-ng
