@@ -8,7 +8,7 @@ base-image: quay.io/fedora/fedora-bootc
 image-version: latest
 
 modules:
-  # - from-file: phase/kernel-and-akmods.yml
+  - from-file: phase/kernel-and-akmods.yml
   - from-file: phase/flex-launcher.yml
   - from-file: phase/xremap.yml
 
@@ -17,31 +17,41 @@ modules:
       cleanup: true
       copr:
         - abn/throttled
-        - bazzite-org/bazzite
-        - bazzite-org/bazzite-multilib
+        # - bazzite-org/bazzite
+        # - bazzite-org/bazzite-multilib
       files:
         - https://pkgs.tailscale.com/stable/fedora/tailscale.repo
         - https://raw.githubusercontent.com/terrapkg/subatomic-repos/main/terra.repo        
-      nonfree: rpmfusion
+      nonfree: negativo17
+    replace:
+      - from-repo: fedora-multimedia
+        packages:
+          - intel-gmmlib
+          - old: gstreamer1-plugins-bad-free
+            new: gstreamer1-plugins-bad      
     install:
       install-weak-deps: false
       allow-erasing: true
       packages:
         # Graphics
-        - ffmpeg
+        - ffmpeg-libs
         - gstreamer1-plugin-dav1d
         - gstreamer1-plugin-libav
         - gstreamer1-plugins-base
         - gstreamer1-plugins-good
         - gstreamer1-plugins-good-qt
-        - gstreamer1-plugins-bad-freeworld
         - gstreamer1-plugins-ugly
         - gstreamer1-vaapi
-        - libavcodec-freeworld
+        - libavcodec
         - libva
-        - libva-intel-driver
-        - intel-media-driver
-        - mesa-va-drivers-freeworld
+        - libva-intel-media-driver
+        - libva-utils
+        - openh264
+        - mesa-dri-drivers
+        - mesa-filesystem
+        - mesa-libEGL
+        - mesa-libGL
+        - mesa-libgbm
         - mesa-vulkan-drivers
         - pipewire-plugin-vulkan
         - vulkan-loader
@@ -80,7 +90,6 @@ modules:
         - pipewire-pulseaudio
         - pipewire-alsa
         - pulseaudio-utils
-        - libva-utils
         - wireplumber
         ## Bluetooth & Controllers
         - bluez
@@ -104,12 +113,12 @@ modules:
     snippets:
       # Binaries
       ## bluetui
-      - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/pythops/bluetui/releases/latest)) && curl -fLs https://github.com/pythops/bluetui/releases/download/${VER}/bluetui-x86_64-linux-musl  -o /tmp/bluetui"
+      - VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/pythops/bluetui/releases/latest)) && curl -fLs https://github.com/pythops/bluetui/releases/download/${VER}/bluetui-x86_64-linux-musl  -o /tmp/bluetui
       - cp /tmp/bluetui /usr/bin/bluetui && chmod 0755 /usr/bin/bluetui
       - rm /tmp/bluetui
       ## just
-      - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/casey/just/releases/latest)) && curl -fLs --create-dirs https://github.com/casey/just/releases/download/${VER}/just-${VER}-x86_64-unknown-linux-musl.tar.gz -o /tmp/just-x86_64-unknown-linux-musl.tar.gz"
-      - "mkdir -p /tmp/just && tar -xzf /tmp/just-x86_64-unknown-linux-musl.tar.gz -C /tmp/just/"
+      - VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/casey/just/releases/latest)) && curl -fLs --create-dirs https://github.com/casey/just/releases/download/${VER}/just-${VER}-x86_64-unknown-linux-musl.tar.gz -o /tmp/just-x86_64-unknown-linux-musl.tar.gz
+      - mkdir -p /tmp/just && tar -xzf /tmp/just-x86_64-unknown-linux-musl.tar.gz -C /tmp/just/
       - cp /tmp/just/just /usr/bin/just && chmod 0755 /usr/bin/just
       - cp /tmp/just/completions/just.bash /usr/share/bash-completion/completions/just
       - cp /tmp/just/completions/just.fish /usr/share/fish/completions/just.fish

@@ -8,7 +8,7 @@ base-image: quay.io/fedora/fedora-bootc
 image-version: latest
 
 modules:
-  # - from-file: phase/kernel-and-akmods.yml
+  - from-file: phase/kernel-and-akmods.yml
   - from-file: phase/flex-launcher.yml
   - from-file: phase/xremap.yml
 
@@ -16,38 +16,49 @@ modules:
     repos:
       cleanup: true
       copr:
-        - bazzite-org/bazzite
-        - bazzite-org/bazzite-multilib
+        - abn/throttled
+        # - bazzite-org/bazzite
+        # - bazzite-org/bazzite-multilib
       files:
         - https://pkgs.tailscale.com/stable/fedora/tailscale.repo
-        - https://raw.githubusercontent.com/terrapkg/subatomic-repos/main/terra.repo
-      nonfree: rpmfusion 
+        - https://raw.githubusercontent.com/terrapkg/subatomic-repos/main/terra.repo        
+      nonfree: negativo17
+    replace:
+      - from-repo: fedora-multimedia
+        packages:
+          - intel-gmmlib
+          - old: gstreamer1-plugins-bad-free
+            new: gstreamer1-plugins-bad      
     install:
       install-weak-deps: false
       allow-erasing: true
       packages:
         # Graphics
-        - ffmpeg
+        - ffmpeg-libs
         - gstreamer1-plugin-dav1d
         - gstreamer1-plugin-libav
         - gstreamer1-plugins-base
         - gstreamer1-plugins-good
         - gstreamer1-plugins-good-qt
-        - gstreamer1-plugins-bad-freeworld
         - gstreamer1-plugins-ugly
         - gstreamer1-vaapi
-        - libavcodec-freeworld
+        - libavcodec
         - libva
-        - libva-intel-driver
-        - intel-media-driver        
-        - mesa-va-drivers-freeworld
+        - libva-intel-media-driver
+        - libva-utils
+        - openh264
+        - mesa-dri-drivers
+        - mesa-filesystem
+        - mesa-libEGL
+        - mesa-libGL
+        - mesa-libgbm
         - mesa-vulkan-drivers
         - pipewire-plugin-vulkan
         - vulkan-loader
         - vulkan-headers
         - vulkan-tools
-        - xdg-user-dirs        
-        - xdg-utils    
+        - xdg-user-dirs
+        - xdg-utils
         # HTPC Packages
         ## Essentials
         - btop
@@ -62,7 +73,6 @@ modules:
         - lsb_release
         - pciutils
         - podlet
-        - ryzenadj
         - seatd
         - smartmontools
         - steam
@@ -80,7 +90,6 @@ modules:
         - pipewire-pulseaudio
         - pipewire-alsa
         - pulseaudio-utils
-        - libva-utils
         - wireplumber
         ## Bluetooth & Controllers
         - blueman
@@ -90,9 +99,6 @@ modules:
         ## CJK fonts
         - google-noto-serif-cjk-vf-fonts
         - google-noto-sans-mono-cjk-vf-fonts   
-        ## Gamescope     
-        - gamescope
-        - gamescope-shaders
         - libeis
         - libXres
         - luajit
@@ -110,6 +116,21 @@ modules:
 
   - type: script
     snippets:
+      # Gamescope
+      - curl https://raw.githubusercontent.com/terrapkg/subatomic-repos/main/terra.repo -o /etc/yum.repos.d/terra.repo
+      - dnf -y copr enable bazzite-org/bazzite
+      - dnf -y copr enable bazzite-org/bazzite-multilib
+      - dnf -y install --setopt=install_weak_deps=False
+          terra-release{,-extras,-mesa}
+      - dnf -y install --setopt=install_weak_deps=False
+          terra-gamescope
+          terra-gamescope-libs
+          gamescope-shaders
+          ryzenadj
+      - dnf -y copr disable bazzite-org/bazzite-multilib
+      - dnf -y copr disable bazzite-org/bazzite
+      - rm -f /etc/yum.repos.d/terra.repo
+      - dnf clean all    
       # Wallpaper
       - curl -fLs "https://github.com/fedoradesign/backgrounds/blob/57a8b2c6fdd425850a2809232d575301977e9e53/extras/01-dark-blue.png" -o /tmp/blue-wallpaper.png
       - cp /tmp/blue-wallpaper.png /usr/share/weston/blue-wallpaper.png
@@ -121,17 +142,17 @@ modules:
       - rm -r /tmp/gamescope-files
       # Binaries
       ## bluetui
-      - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/pythops/bluetui/releases/latest)) && curl -fLs https://github.com/pythops/bluetui/releases/download/${VER}/bluetui-x86_64-linux-musl  -o /tmp/bluetui"
+      - VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/pythops/bluetui/releases/latest)) && curl -fLs https://github.com/pythops/bluetui/releases/download/${VER}/bluetui-x86_64-linux-musl  -o /tmp/bluetui
       - cp /tmp/bluetui /usr/bin/bluetui && chmod 0755 /usr/bin/bluetui
       - rm /tmp/bluetui
       ## extest (library, actually)
       - mkdir -p /usr/lib/extest
-      - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/ublue-os/extest/releases/latest)) && curl -fLs https://github.com/ublue-os/extest/releases/download/${VER}/libextest.so -o /tmp/libextest.so"
+      - VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/ublue-os/extest/releases/latest)) && curl -fLs https://github.com/ublue-os/extest/releases/download/${VER}/libextest.so -o /tmp/libextest.so
       - cp /tmp/libextest.so /usr/lib/extest/libextest.so
       - rm /tmp/libextest.so      
       ## just
-      - "VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/casey/just/releases/latest)) && curl -fLs --create-dirs https://github.com/casey/just/releases/download/${VER}/just-${VER}-x86_64-unknown-linux-musl.tar.gz -o /tmp/just-x86_64-unknown-linux-musl.tar.gz"
-      - "mkdir -p /tmp/just && tar -xzf /tmp/just-x86_64-unknown-linux-musl.tar.gz -C /tmp/just/"
+      - VER=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/casey/just/releases/latest)) && curl -fLs --create-dirs https://github.com/casey/just/releases/download/${VER}/just-${VER}-x86_64-unknown-linux-musl.tar.gz -o /tmp/just-x86_64-unknown-linux-musl.tar.gz
+      - mkdir -p /tmp/just && tar -xzf /tmp/just-x86_64-unknown-linux-musl.tar.gz -C /tmp/just/
       - cp /tmp/just/just /usr/bin/just && chmod 0755 /usr/bin/just
       - cp /tmp/just/completions/just.bash /usr/share/bash-completion/completions/just
       - cp /tmp/just/completions/just.fish /usr/share/fish/completions/just.fish
