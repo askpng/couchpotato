@@ -34,7 +34,7 @@ modules:
       allow-erasing: true
       packages:
         # Graphics
-        - ffmpeg-libs
+        - ffmpeg
         - gstreamer1-plugin-dav1d
         - gstreamer1-plugin-libav
         - gstreamer1-plugins-base
