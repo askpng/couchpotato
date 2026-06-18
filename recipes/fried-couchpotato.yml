@@ -74,7 +74,6 @@ modules:
         - pciutils
         - podlet
         - powertop
-        - ryzenadj
         - seatd
         - smartmontools
         - s-tui
