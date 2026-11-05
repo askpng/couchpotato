@@ -102,7 +102,7 @@ modules:
         - firewall-config
         - syncthing
         ## Undervolting & TDP limit for older Intel CPUs
-        - throttled
+        # - throttled
         # Dependencies
         ## AppImage
         - fuse
